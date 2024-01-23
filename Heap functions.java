@@ -1,4 +1,4 @@
-// Java program to implement Max Heap
+// Java program to implement Max D-ary heap
 
 // Main class
 public class MaxHeap {
@@ -134,6 +134,8 @@ public class MaxHeap {
 		// Display message for better readability
 		System.out.println("The Max Heap is ");
 
+        System.out.println ("Please anter the 'd' wanted: ");
+    
 		//initialising heap
         
 

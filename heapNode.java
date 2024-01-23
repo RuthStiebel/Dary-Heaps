@@ -1,8 +1,8 @@
 /**
  * This class represents a number node in a heap.
  * @author Ruth Rivka Stiebel
- * @version 23-01-24
  */
+
 public class HeapNode
 {
     private int _value;
@@ -34,7 +34,7 @@ public class HeapNode
      * Returns the value.
      * @return value
      */
-    public int getvalue ()
+    public int getValue ()
     {
         return _value;
     }
@@ -53,7 +53,7 @@ public class HeapNode
      * Updates value to value given.
      * @param value New value
      */
-    public void setvalue (int value)
+    public void setValue (int value)
     {
         _value = value;   
     }
@@ -77,15 +77,3 @@ public class HeapNode
         return _value.equals(other._value);   
     }
 
-    /**
-     * Checks if this value is before the HeapNode given as a parameter.
-     * @param other The parameter to be checked with
-     * @return true If this value is before other value
-     */
-    public boolean isBefore (HeapNode other)
-    {
-        if (other!=null)
-            return this._value.compareTo(other._value)<=0;
-        return true; //if other is null the this is before it
-    }
-}
