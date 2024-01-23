@@ -1,4 +1,5 @@
 // Java program to implement Max D-ary heap
+import java.util.Scanner;
 
 // Main class
 public class MaxHeap {
@@ -131,28 +132,34 @@ public class MaxHeap {
 	// main driver method
 	public static void main(String[] arg)
 	{
-		// Display message for better readability
-		System.out.println("The Max Heap is ");
-
-        System.out.println ("Please anter the 'd' wanted: ");
-    
-		//initialising heap
+        Scanner scan = new Scanner(System.in);
+        System.out.println ("READ BEFORE USING PROGRAM!\nFOR THE USER'S INFORMATION:\n" +
+         "This program does not check that the \"d\" entered is a valid number.\n" +
+         "This program does not check that the file PATH entered is correct and that the file residing there is not empty.\n" +
+         "The numbers in the file should be seperated by \"\\n\" - or an enter, else the program will glitch." + 
+         "If these instructions are not clear or acceptable to you please do not use the program for it is not meant for such as you." +
+         "If you would like to continue, please type 1 and then enter.");
         
+         if (scan.nextInt() != 1) {
+            System.out.println ("Exiting program now.");
+            exit (0);
+        }
+
+        System.out.println ("Please enter a number that is the 'd' wanted: ");
+        int d = scan.nextInt();
+    
+        System.out.println ("Please enter the file PATH: ");
+        String str = scan.next();
+
+		//initialising heap
+        DaryHeap dHeap = new DaryHeap (str);
 
 		// Inserting nodes
-		// Custom inputs
-		maxHeap.insert(5);
-		maxHeap.insert(3);
-		maxHeap.insert(17);
-		maxHeap.insert(10);
-		maxHeap.insert(84);
-		maxHeap.insert(19);
-		maxHeap.insert(6);
-		maxHeap.insert(22);
-		maxHeap.insert(9);
+\
 
-		// Calling maxHeap() as defined above
-		maxHeap.print();
+        // Display message for better readability
+		System.out.println("The D-ary Heap after sorting looks like: ");
+		dHeap.print();
 
 		// Print and display the maximum value in heap
 		System.out.println("The max val is "

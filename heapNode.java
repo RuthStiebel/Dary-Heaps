@@ -76,4 +76,6 @@ public class HeapNode
     {
         return _value.equals(other._value);   
     }
+    
+}
 
