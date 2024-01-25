@@ -137,7 +137,7 @@ public class MaxHeap {
          "This program does not check that the \"d\" entered is a valid number.\n" +
          "This program does not check that the file PATH entered is correct and that the file residing there is not empty.\n" +
          "The numbers in the file should be seperated by \"\\n\" - or an enter, else the program will glitch." + 
-         "If these instructions are not clear or acceptable to you please do not use the program for it is not meant for such as you." +
+         "If these instructions are not clear or acceptable to you, please do not use the program for it is not meant for such as you." +
          "If you would like to continue, please type 1 and then enter.");
         
          if (scan.nextInt() != 1) {
@@ -151,13 +151,10 @@ public class MaxHeap {
         System.out.println ("Please enter the file PATH: ");
         String str = scan.next();
 
-		//initialising heap
+		// Initialising heap
         DaryHeap dHeap = new DaryHeap (str);
 
-		// Inserting nodes
-\
-
-        // Display message for better readability
+        // Displaying message for better readability
 		System.out.println("The D-ary Heap after sorting looks like: ");
 		dHeap.print();
 
