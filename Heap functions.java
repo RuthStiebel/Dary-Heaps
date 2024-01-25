@@ -129,7 +129,7 @@ public class MaxHeap {
 	}
 
 	// Method 10
-	// main driver method
+	// main method
 	public static void main(String[] arg)
 	{
         Scanner scan = new Scanner(System.in);
