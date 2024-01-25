@@ -6,13 +6,13 @@ public class MaxHeap {
 	private int[] Heap;
 	private int size;
 	private int maxsize;
+    private int d;
 
 	// Constructor to initialize an
 	// empty max heap with given maximum
 	// capacity
 	public MaxHeap(int maxsize)
 	{
-		// This keyword refers to current instance itself
 		this.maxsize = maxsize;
 		this.size = 0;
 		Heap = new int[this.maxsize];
@@ -20,26 +20,23 @@ public class MaxHeap {
 
 	// Method 1
 	// Returning position of parent
-	private int parent(int pos) { return (pos - 1) / 2; }
+	private int parent (int pos) { return (pos - 1) / 2; }
 
 	// Method 2
-	// Returning left children
-	private int leftChild(int pos) { return (2 * pos) + 1; }
-
-	// Method 3
-	// Returning right children
-	private int rightChild(int pos)
-	{
-		return (2 * pos) + 2;
-	}
+	// Returning a child in position given 
+	private int dChild(int position, int dPlace) 
+    {   
+        if (dPlace <= this.d)
+            return (2 * position) + d; 
+        return 0;
+    }
 
 	// Method 4
 	// Returning true if given node is leaf
-	private boolean isLeaf(int pos)
+	private boolean isLeaf(int position)
 	{
-		if (pos > (size / 2) && pos <= size) {
+		if (position > (size / this.d) && position <= size) 
 			return true;
-		}
 		return false;
 	}
 
@@ -160,6 +157,6 @@ public class MaxHeap {
 
 		// Print and display the maximum value in heap
 		System.out.println("The max val is "
-						+ maxHeap.extractMax());
+						+ dHeap.extractMax());
 	}
 }
