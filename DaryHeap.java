@@ -24,9 +24,9 @@ public class DaryHeap {
      * Constructor for object of class DaryHeap.
      * The time complexity is O(n).
      * The space complexity is O(n).
-     * @param filename The PATH of the file from which the heap is built 
+     * @param fileName The PATH of the file from which the heap is built 
      */
-    public DaryHeap (String filename)
+    public DaryHeap (String fileName)
     {
         // initializes an empty max heap with maximum capacity
         this.heapEndPointer = 0;
@@ -195,7 +195,7 @@ public class DaryHeap {
         
          if (scan.nextInt() != 1) {
             System.out.println ("Exiting program now.");
-            exit (0);
+            System.exit (0);
         }
 
         System.out.println ("Please enter a number that is the 'd' wanted: ");
