@@ -2,25 +2,64 @@
 import java.util.Scanner;
 
 // Main class
-public class MaxHeap {
+public class DaryHeap {
 	private int[] Heap;
-	private int size;
-	private int maxsize;
+	private int heapEndPointer;
+	private final int maxSize = 5000;
     private int d;
 
-	// Constructor to initialize an
-	// empty max heap with given maximum
-	// capacity
-	public MaxHeap(int maxsize)
+	// Constructor to initialize an empty max heap with maximum capacity
+	public DaryHeap()
 	{
-		this.maxsize = maxsize;
-		this.size = 0;
-		Heap = new int[this.maxsize];
+		this.heapEndPointer = 0;
+		this.Heap = new int[this.maxSize];
 	}
+
+    // Second constructor 
+    // Initializes a heap with up to maximum capacity from a file
+    
+    /**
+     * Constructor for object of class DaryHeap.
+     * The time complexity is O(n).
+     * The space complexity is O(n).
+     * @param filename The PATH of the file from which the heap is built 
+     */
+    public DaryHeap (String filename)
+    {
+        // turn numbers in file into a linked list that represents the heap
+        DaryHeap();
+        BufferedReader br = null;
+
+        try {
+
+            br = new BufferedReader(new FileReader(fileName));
+
+            String line;
+            while ((line = br.readLine()) != null && heapEndPointer < maxSize) {
+                this.Heap[heapEndPointer] = (int)line;
+                heapEndPointer ++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                br.close();
+            }
+        }
+
+        if (heapEndPointer = maxSize)
+            System.out.println("Numbers in file exceeded maximum size allowed (" + maxSize + "). \nCopied only the first "
+            + maxSize + " numbers in the file.");
+    }
+
 
 	// Method 1
 	// Returning position of parent
-	private int parent (int pos) { return (pos - 1) / 2; }
+	private int parent (int position) 
+    { 
+        return (position - 1) / this.d; 
+    }
 
 	// Method 2
 	// Returning a child in position given 
@@ -35,79 +74,87 @@ public class MaxHeap {
 	// Returning true if given node is leaf
 	private boolean isLeaf(int position)
 	{
-		if (position > (size / this.d) && position <= size) 
+		if (position > (heapEndPointer / this.d) && position <= heapEndPointer) 
 			return true;
 		return false;
 	}
 
 	// Method 5
 	// Swapping nodes
-	private void swap(int fpos, int spos)
+	private void swap(int firstPosition, int swapPosition)
 	{
 		int tmp;
-		tmp = Heap[fpos];
-		Heap[fpos] = Heap[spos];
-		Heap[spos] = tmp;
+		tmp = Heap[firstPosition];
+		Heap[firstPosition] = Heap[swapPosition];
+		Heap[swapPosition] = tmp;
 	}
 
 	// Method 6
 	// Recursive function to max heapify given subtree
-	private void maxHeapify(int pos)
+	private void maxHeapify (int position)
 	{
-		if (isLeaf(pos))
+        int dPlace = 1;
+        int counter = 1;
+
+		if (isLeaf(position)) //then there is no leaf after
 			return;
 
-		if (Heap[pos] < Heap[leftChild(pos)]
-			|| Heap[pos] < Heap[rightChild(pos)]) {
+        while (dPlace <= this.d) {
+            while (counter <= this.d) {
 
-			if (Heap[leftChild(pos)]
-				> Heap[rightChild(pos)]) {
-				swap(pos, leftChild(pos));
-				maxHeapify(leftChild(pos));
-			}
-			else {
-				swap(pos, rightChild(pos));
-				maxHeapify(rightChild(pos));
-			}
-		}
+                 //if the value of the son is larger than the value of the father
+                if (Heap[position] < Heap[dChild(position, dPlace)]) {
+
+                    //if the value on the left is larger than the value on the right
+                    if (Heap[dChild(position, dPlace)] > Heap[dChild(position, dPlace + counter)]) { 
+                        swap(position, dChild(position, dPlace));
+                        maxHeapify(dChild(position, dPlace));
+                    }
+                    //the value on the right is larger than the value on the left
+                    else { 
+                        swap(position, dChild(position, dPlace + 1));
+                        maxHeapify(dChild(position, dPlace + 1));
+                    }
+                }
+                counter ++;
+            }
+            dPlace ++;
+        }	
 	}
 
 	// Method 7
 	// Inserts a new element to max heap
+    // The time complexity is O(n)
 	public void insert(int element)
 	{
-		Heap[size] = element;
+		Heap[this.heapEndPointer] = element;
 
-		// Traverse up and fix violated property
-		int current = size;
+		// Fix the heap so it stays a maximum heap
+		int current = this.heapEndPointer;
 		while (Heap[current] > Heap[parent(current)]) {
 			swap(current, parent(current));
 			current = parent(current);
 		}
-		size++;
+		this.heapEndPointer++;
 	}
 
 	// Method 8
 	// To display heap
 	public void print()
 	{
+        int dCounter = 1;
 
-		for (int i = 0; i < size / 2; i++) {
+		for (int i = 0; i < heapEndPointer / this.d; i++) {
 
 			System.out.print("Parent Node : " + Heap[i]);
+            while (dCounter < this.d) 
+            {
+                if (dChild(i, dCounter) < heapEndPointer) // checks if the child is out of the bound of the array
+                    System.out.print(" Left Child Node: "+ Heap[dChild(i, dCounter)]);
+                dCounter++;
+            }
 
-			if (leftChild(i)
-				< size) // if the child is out of the bound
-						// of the array
-				System.out.print(" Left Child Node: "
-								+ Heap[leftChild(i)]);
-
-			if (rightChild(i)
-				< size) // the right child index must not
-						// be out of the index of the array
-				System.out.print(" Right Child Node: "
-								+ Heap[rightChild(i)]);
-
+            dCounter = 1;
 			System.out.println(); // for new line
 		}
 	}
@@ -118,9 +165,9 @@ public class MaxHeap {
 	
     public int extractMax (int heap[])
 	{
-		int size = heap.length();
+		int heapEndPointer = heap.length();
 		int max = heap[0];
-		heap[0] = heap[--size];
+		heap[0] = heap[--heapEndPointer];
 		maxHeapify(0);
 		return max;
 	}
