@@ -5,14 +5,22 @@ import java.util.Scanner;
 public class DaryHeap {
 	private int[] Heap;
 	private int heapEndPointer;
-	private final int maxSize = 5000;
+	private final int MAX_SIZE = 5000;
     private int d;
+
+    //colours
+    private final String ANSI_BLACK = "\u001B[30m"; 
+    private final String ANSI_RED = "\u001B[31m"; 
+    private final String ANSI_GREEN = "\u001B[32m"; 
+    private final String ANSI_BLUE = "\u001B[34m"; 
+    private final String ANSI_PURPLE = "\u001B[35m"; 
+
 
 	// Constructor to initialize an empty max heap with maximum capacity
 	public DaryHeap()
 	{
 		this.heapEndPointer = 0;
-		this.Heap = new int[this.maxSize];
+		this.Heap = new int[this.MAX_SIZE];
 	}
 
     // Second constructor 
@@ -35,7 +43,7 @@ public class DaryHeap {
             br = new BufferedReader(new FileReader(fileName));
 
             String line;
-            while ((line = br.readLine()) != null && heapEndPointer < maxSize) {
+            while ((line = br.readLine()) != null && heapEndPointer < MAX_SIZE) {
                 this.Heap[heapEndPointer] = (int)line;
                 heapEndPointer ++;
             }
@@ -48,9 +56,9 @@ public class DaryHeap {
             }
         }
 
-        if (heapEndPointer = maxSize)
-            System.out.println("Numbers in file exceeded maximum size allowed (" + maxSize + "). \nCopied only the first "
-            + maxSize + " numbers in the file.");
+        if (heapEndPointer = MAX_SIZE)
+            System.out.println("Numbers in file exceeded maximum size allowed (" + MAX_SIZE + "). \nCopied only the first "
+            + MAX_SIZE + " numbers in the file.");
     }
 
 
@@ -70,7 +78,7 @@ public class DaryHeap {
         return 0;
     }
 
-	// Method 4
+	// Method 3
 	// Returning true if given node is leaf
 	private boolean isLeaf(int position)
 	{
@@ -79,7 +87,7 @@ public class DaryHeap {
 		return false;
 	}
 
-	// Method 5
+	// Method 4
 	// Swapping nodes
 	private void swap(int firstPosition, int swapPosition)
 	{
@@ -89,7 +97,7 @@ public class DaryHeap {
 		Heap[swapPosition] = tmp;
 	}
 
-	// Method 6
+	// Method 65
 	// Recursive function to max heapify given subtree
 	private void maxHeapify (int position)
 	{
@@ -122,7 +130,7 @@ public class DaryHeap {
         }	
 	}
 
-	// Method 7
+	// Method 6
 	// Inserts a new element to max heap
     // The time complexity is O(n)
 	public void insert(int element)
@@ -138,7 +146,7 @@ public class DaryHeap {
 		this.heapEndPointer++;
 	}
 
-	// Method 8
+	// Method 7
 	// To display heap
 	public void print()
 	{
@@ -160,7 +168,7 @@ public class DaryHeap {
 	}
 
 //in extract max I need to save the highest value and then reheapify the the heap
-	// Method 9
+	// Method 8
 	// Remove an element from max heap
 	
     public int extractMax (int heap[])
@@ -172,7 +180,7 @@ public class DaryHeap {
 		return max;
 	}
 
-	// Method 10
+	// Method 9
 	// main method
 	public static void main(String[] arg)
 	{
@@ -180,7 +188,7 @@ public class DaryHeap {
         System.out.println ("READ BEFORE USING PROGRAM!\nFOR THE USER'S INFORMATION:\n" +
          "This program does not check that the \"d\" entered is a valid number.\n" +
          "This program does not check that the file PATH entered is correct and that the file residing there is not empty.\n" +
-         "The numbers in the file should be seperated by \"\\n\" - or an enter, else the program will glitch." + 
+         "Each number in the file should be on a different line than the one before it, with no other symbols or letters.\n If the file is built differently then the program will glitch." + 
          "If these instructions are not clear or acceptable to you, please do not use the program for it is not meant for such as you." +
          "If you would like to continue, please type 1 and then enter.");
         
