@@ -10,9 +10,6 @@ public class DaryHeap {
 
     //colours  private final String ANSI_BLACK = "\u001B[30m";  private final String ANSI_RED = "\u001B[31m"; private final String ANSI_GREEN = "\u001B[32m";  private final String ANSI_BLUE = "\u001B[34m"; private final String ANSI_PURPLE = "\u001B[35m"; 
 
-
-
-
    // Initializes a heap with up to maximum capacity from a file
     
     /**
@@ -21,12 +18,12 @@ public class DaryHeap {
      * The space complexity is O(n).
      * @param fileName The PATH of the file from which the heap is built 
      */
-    public DaryHeap (String fileName)
+    public DaryHeap (String fileName, int d)
     {
         // initializes an empty max heap with maximum capacity
         this.heapEndPointer = 0;
 		this.heap = new int[this.MAX_SIZE];
-
+        this.d = d;
         BufferedReader br = null;
 
         try {
@@ -181,7 +178,7 @@ public class DaryHeap {
 	/**
 	 * @param arg
 	 */
-	public void main(String[] arg)
+	public static void main(String[] arg)
 	{
         Scanner scan = new Scanner(System.in);
         System.out.println ("READ BEFORE USING PROGRAM!\nFOR THE USER'S INFORMATION:\n" +
@@ -197,13 +194,13 @@ public class DaryHeap {
         }
 
         System.out.println ("Please enter a number that is the 'd' wanted: ");
-        this.d = scan.nextInt();
+        int d = scan.nextInt();
     
         System.out.println ("Please enter the file PATH: ");
         String str = scan.next();
 
 		// Initialising heap
-        DaryHeap dHeap = new DaryHeap (str);
+        DaryHeap dHeap = new DaryHeap (str, d);
 
         // Displaying message for better readability
 		System.out.println("The D-ary Heap after sorting looks like: ");
