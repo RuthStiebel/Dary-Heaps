@@ -9,6 +9,17 @@ public class DaryHeap {
     private static final int MAX_SIZE = 5000;
     private static int d;
 
+    //formatting
+    private static final String ANSI_BLACK_DEFAULT = "\u001B[30m";  
+    private static final String ANSI_RED = "\u001B[31m"; 
+    private static final String ANSI_GREEN = "\u001B[32m";  
+    private static final String ANSI_BLUE_DARK = "\u001B[34m"; 
+    private static final String ANSI_PURPLE = "\u001B[35m"; 
+    private static final String ANSI_BLUE_DARK_LIGHT = "\u001B[36m";
+    private static final String BOLD_STRING = "\033[0;1m";
+    private static final String UNBOLD_STRING = "\u001B[0m";
+
+
    
     /**
      * Constructor for object of class DaryHeap.
@@ -110,7 +121,7 @@ public class DaryHeap {
 
     public void print() {
         for (int i = 0; i < heapEndPointer; i++) {
-            System.out.print(heap[i]);
+            System.out.print(heap[i] + "\t");
         }
         System.out.println(); // for new line
     }
@@ -120,22 +131,23 @@ public class DaryHeap {
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
-        System.out.println ("READ BEFORE USING PROGRAM!\nFOR THE USER'S INFORMATION:\n" +
-         "This program does not check that the \"d\" entered is a valid number.\n" +
-         "This program does not check that the file PATH entered is correct and that the file residing there is not empty.\n" +
-         "Each number in the file should be on a different line than the one before it, with no other symbols or letters.\nIf the file is built differently then the program will glitch." + 
-         "If these instructions are not clear or acceptable to you, please do not use the program for it is not meant for such as you." +
-         "\nIf you would like to continue, please type 1 and then enter.");
+        System.out.println (ANSI_RED + "READ BEFORE USING PROGRAM!\n\n" + ANSI_BLUE_DARK + "FOR THE USER'S INFORMATION:\n\n" + ANSI_BLACK_DEFAULT +
+         "This program " + ANSI_PURPLE + "does not " + ANSI_BLACK_DEFAULT + "check that the \"d\" entered is a valid number.\n" +
+         "This program " + ANSI_PURPLE + "does not " + ANSI_BLACK_DEFAULT + "check that the file PATH entered is correct and that the file residing there is not empty.\n" +
+         "Each number in the file should be on a different line than the one before it, with no other symbols or letters.\n" + 
+         ANSI_BLUE_DARK_LIGHT + "If the file given is built differently then specified then the program will glitch." + ANSI_BLACK_DEFAULT +
+         "\n\nIf these instructions are not clear or acceptable to you, please " + ANSI_RED + "do not use the program for it is not meant for such as you." +
+         ANSI_GREEN + "\nIf you would like to continue, please type 1 and then enter.");
         
          if (scan.nextInt() != 1) {
-            System.out.println ("Exiting program now.");
+            System.out.println (ANSI_PURPLE + "Exiting program now."  + ANSI_BLACK_DEFAULT);
             System.exit (0);
         }
 
-        System.out.println ("Please enter a number that is the 'd' wanted: ");
+        System.out.println ("Please enter a number that is the 'd' wanted and then press enter: ");
         int d = scan.nextInt();
     
-        System.out.println("Please enter the file PATH:");
+        System.out.println("Please enter the file PATH and then press enter:" + ANSI_BLACK_DEFAULT);
         String str = scan.next();
 
         // Initialising heap
@@ -144,24 +156,28 @@ public class DaryHeap {
         // Displaying message for better readability
         
         
-        System.out.println("Built Heap: ");
+        System.out.println(BOLD_STRING + "Built Heap: " + UNBOLD_STRING);
         dHeap.print();
         
         dHeap.buildHeap();
-        System.out.println("The D-ary Heap after sorting looks like: ");
+        System.out.println(BOLD_STRING + "The D-ary Heap after sorting looks like: " + UNBOLD_STRING);
         dHeap.print();
         
         int element = 3;
         dHeap.insert(element);
         heapEndPointer++;
         
-        System.out.println("\n\nHeap after insertion of " + element + ": ");
+        System.out.println(BOLD_STRING + "\n\nHeap after insertion of " + element + ": " + UNBOLD_STRING);
         dHeap.print();
         
-        System.out.println("\n\nExtracted max is " + dHeap.extractMax());
+        System.out.println(BOLD_STRING + "\n\nExtracted max is " + dHeap.extractMax());
         heapEndPointer--;
         
-        System.out.println("\n\nHeap after extract max: ");
+        System.out.println(BOLD_STRING + "\n\nHeap after extract max: " + UNBOLD_STRING);
         dHeap.print();
+
+        //closing scanner
+        scan.close();
+
     }
 }
