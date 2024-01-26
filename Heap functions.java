@@ -1,9 +1,11 @@
 // Java program to implement Max D-ary heap
 import java.util.Scanner;
+import java.io.*;
+import java.lang.System;
 
 // Main class
 public class DaryHeap {
-	private int[] Heap;
+	private int[] heap;
 	private int heapEndPointer;
 	private final int MAX_SIZE = 5000;
     private int d;
@@ -16,15 +18,7 @@ public class DaryHeap {
     private final String ANSI_PURPLE = "\u001B[35m"; 
 
 
-	// Constructor to initialize an empty max heap with maximum capacity
-	public DaryHeap()
-	{
-		this.heapEndPointer = 0;
-		this.Heap = new int[this.MAX_SIZE];
-	}
-
-    // Second constructor 
-    // Initializes a heap with up to maximum capacity from a file
+   // Initializes a heap with up to maximum capacity from a file
     
     /**
      * Constructor for object of class DaryHeap.
@@ -34,8 +28,10 @@ public class DaryHeap {
      */
     public DaryHeap (String filename)
     {
-        // turn numbers in file into a linked list that represents the heap
-        DaryHeap();
+        // initializes an empty max heap with maximum capacity
+        this.heapEndPointer = 0;
+		this.heap = new int[this.MAX_SIZE];
+
         BufferedReader br = null;
 
         try {
@@ -44,7 +40,13 @@ public class DaryHeap {
 
             String line;
             while ((line = br.readLine()) != null && heapEndPointer < MAX_SIZE) {
-                this.Heap[heapEndPointer] = (int)line;
+                    
+                try {
+                    this.heap[heapEndPointer]  = Integer.parseInt(line);
+                } catch (NumberFormatException e) {
+                            System.out.println("Invalid integer input");
+                }
+
                 heapEndPointer ++;
             }
 
@@ -56,7 +58,7 @@ public class DaryHeap {
             }
         }
 
-        if (heapEndPointer = MAX_SIZE)
+        if (heapEndPointer == MAX_SIZE)
             System.out.println("Numbers in file exceeded maximum size allowed (" + MAX_SIZE + "). \nCopied only the first "
             + MAX_SIZE + " numbers in the file.");
     }
@@ -92,9 +94,9 @@ public class DaryHeap {
 	private void swap(int firstPosition, int swapPosition)
 	{
 		int tmp;
-		tmp = Heap[firstPosition];
-		Heap[firstPosition] = Heap[swapPosition];
-		Heap[swapPosition] = tmp;
+		tmp = heap[firstPosition];
+		heap[firstPosition] = heap[swapPosition];
+		heap[swapPosition] = tmp;
 	}
 
 	// Method 65
@@ -111,10 +113,10 @@ public class DaryHeap {
             while (counter <= this.d) {
 
                  //if the value of the son is larger than the value of the father
-                if (Heap[position] < Heap[dChild(position, dPlace)]) {
+                if (heap[position] < heap[dChild(position, dPlace)]) {
 
                     //if the value on the left is larger than the value on the right
-                    if (Heap[dChild(position, dPlace)] > Heap[dChild(position, dPlace + counter)]) { 
+                    if (heap[dChild(position, dPlace)] > heap[dChild(position, dPlace + counter)]) { 
                         swap(position, dChild(position, dPlace));
                         maxHeapify(dChild(position, dPlace));
                     }
@@ -135,11 +137,11 @@ public class DaryHeap {
     // The time complexity is O(n)
 	public void insert(int element)
 	{
-		Heap[this.heapEndPointer] = element;
+		heap[this.heapEndPointer] = element;
 
 		// Fix the heap so it stays a maximum heap
 		int current = this.heapEndPointer;
-		while (Heap[current] > Heap[parent(current)]) {
+		while (heap[current] > heap[parent(current)]) {
 			swap(current, parent(current));
 			current = parent(current);
 		}
@@ -154,11 +156,11 @@ public class DaryHeap {
 
 		for (int i = 0; i < heapEndPointer / this.d; i++) {
 
-			System.out.print("Parent Node : " + Heap[i]);
+			System.out.print("Parent Node : " + heap[i]);
             while (dCounter < this.d) 
             {
                 if (dChild(i, dCounter) < heapEndPointer) // checks if the child is out of the bound of the array
-                    System.out.print(" Left Child Node: "+ Heap[dChild(i, dCounter)]);
+                    System.out.print(" Left Child Node: "+ heap[dChild(i, dCounter)]);
                 dCounter++;
             }
 
@@ -171,11 +173,10 @@ public class DaryHeap {
 	// Method 8
 	// Remove an element from max heap
 	
-    public int extractMax (int heap[])
+    public int extractMax ()
 	{
-		int heapEndPointer = heap.length();
-		int max = heap[0];
-		heap[0] = heap[--heapEndPointer];
+		int max = this.heap[0];
+		this.heap[0] = this.heap[--this.heapEndPointer];
 		maxHeapify(0);
 		return max;
 	}
