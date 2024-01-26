@@ -5,7 +5,7 @@ import java.lang.System;
 public class DaryHeap {
 	private int[] heap;
 	private int heapEndPointer;
-	private final int MAX_SIZE = 5000;
+	private static final int MAX_SIZE = 5000;
     private int d;
 
     //colours  private final String ANSI_BLACK = "\u001B[30m";  private final String ANSI_RED = "\u001B[31m"; private final String ANSI_GREEN = "\u001B[32m";  private final String ANSI_BLUE = "\u001B[34m"; private final String ANSI_PURPLE = "\u001B[35m"; 
@@ -22,13 +22,10 @@ public class DaryHeap {
     {
         // initializes an empty max heap with maximum capacity
         this.heapEndPointer = 0;
-		this.heap = new int[this.MAX_SIZE];
+		this.heap = new int[MAX_SIZE];
         this.d = d;
-        BufferedReader br = null;
-
-        try {
-
-            br = new BufferedReader(new FileReader(fileName));
+ 
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
             String line;
             while ((line = br.readLine()) != null && heapEndPointer < MAX_SIZE) {
@@ -36,18 +33,17 @@ public class DaryHeap {
                 try {
                     this.heap[heapEndPointer]  = Integer.parseInt(line);
                 } catch (NumberFormatException e) {
-                            System.out.println("Invalid integer input");
+                    System.out.println("Invalid integer input in line: " + line);
                 }
+                
 
                 heapEndPointer ++;
             }
 
+            br.close();
+
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (br != null) {
-                br.close();
-            }
         }
 
         if (heapEndPointer == MAX_SIZE)
@@ -152,7 +148,7 @@ public class DaryHeap {
             while (dCounter < this.d) 
             {
                 if (dChild(i, dCounter) < heapEndPointer) // checks if the child is out of the bound of the array
-                    System.out.print(" Left Child Node: "+ heap[dChild(i, dCounter)]);
+                    System.out.print(dCounter + " Child Node: " + heap[dChild(i, dCounter)]);
                 dCounter++;
             }
 
@@ -184,9 +180,9 @@ public class DaryHeap {
         System.out.println ("READ BEFORE USING PROGRAM!\nFOR THE USER'S INFORMATION:\n" +
          "This program does not check that the \"d\" entered is a valid number.\n" +
          "This program does not check that the file PATH entered is correct and that the file residing there is not empty.\n" +
-         "Each number in the file should be on a different line than the one before it, with no other symbols or letters.\n If the file is built differently then the program will glitch." + 
+         "Each number in the file should be on a different line than the one before it, with no other symbols or letters.\nIf the file is built differently then the program will glitch." + 
          "If these instructions are not clear or acceptable to you, please do not use the program for it is not meant for such as you." +
-         "If you would like to continue, please type 1 and then enter.");
+         "\nIf you would like to continue, please type 1 and then enter.");
         
          if (scan.nextInt() != 1) {
             System.out.println ("Exiting program now.");
@@ -197,7 +193,7 @@ public class DaryHeap {
         int d = scan.nextInt();
     
         System.out.println ("Please enter the file PATH: ");
-        String str = scan.next();
+        String str = scan.nextLine();
 
 		// Initialising heap
         DaryHeap dHeap = new DaryHeap (str, d);
@@ -207,8 +203,7 @@ public class DaryHeap {
 		dHeap.print();
 
 		// Print and display the maximum value in heap
-		System.out.println("The max val is "
-						+ dHeap.extractMax());
+		//System.out.println("The max val is "	+ dHeap.extractMax());
 
         //closing scanner
         scan.close();
