@@ -7,7 +7,6 @@ public class DaryHeap {
     private static int[] heap;
     private static int heapEndPointer;
     private static final int MAX_SIZE = 5000;
-    private int dPlace = 1;
     private static int d;
 
    
@@ -50,24 +49,24 @@ public class DaryHeap {
             + MAX_SIZE + " numbers in the file.");
     }
 
-    public static void buildHeap() {
+    public void buildHeap() {
         for (int i = (heapEndPointer - 1) / d; i >= 0; i--)
             restoreDown(heapEndPointer, i);
     }
  
-    public static void insert(int element) {
+    public void insert(int element) {
         heap[heapEndPointer - 1] = element;
         restoreUp(heapEndPointer - 1, d);
     }
  
-    public static int extractMax() {
+    public int extractMax() {
         int max = heap[0];
         heap[0] = heap[heapEndPointer - 1];
         restoreDown(heapEndPointer - 1, 0);
         return max;
     }
  
-    public static void restoreDown(int len, int index) {
+    private void restoreDown(int len, int index) {
         int[] child = new int[d + 1];
         while (true) {
             for (int i = 1; i <= d; i++)
@@ -91,11 +90,11 @@ public class DaryHeap {
         }
     }
  
-    public static void restoreUp(int index, int d) {
+    private void restoreUp(int index, int d) {
         int parent = (index - 1) / d;
         while (parent >= 0) {
             if (heap[index] > heap[parent]) {
-                swap(heap, index, parent);
+                swap(index, parent);
                 index = parent;
                 parent = (index - 1) / d;
             } else
@@ -103,33 +102,66 @@ public class DaryHeap {
         }
     }
  
-    public static void swap( int i, int j) {
+    private void swap(int i, int j) {
         int temp = heap[i];
         heap[i] = heap[j];
         heap[j] = temp;
     }
-}
 
-public static void main(String[] args) {
+    public void print() {
+        for (int i = 0; i < heapEndPointer; i++) {
+            System.out.print(heap[i]);
+        }
+        System.out.println(); // for new line
+    }
 
-    buildHeap();
 
-    System.out.println("Built Heap: ");
-    for (int i = 0; i < heapEndPointer; i++)
-        System.out.print(heap[i] + " ");
 
-    int element = 3;
-    insert(element);
-    heapEndPointer++;
+    public static void main(String[] args) {
 
-    System.out.println("\n\nHeap after insertion of " + element + ": ");
-    for (int i = 0; i < heapEndPointer; i++)
-        System.out.print(heap[i] + " ");
+        Scanner scan = new Scanner(System.in);
+        System.out.println ("READ BEFORE USING PROGRAM!\nFOR THE USER'S INFORMATION:\n" +
+         "This program does not check that the \"d\" entered is a valid number.\n" +
+         "This program does not check that the file PATH entered is correct and that the file residing there is not empty.\n" +
+         "Each number in the file should be on a different line than the one before it, with no other symbols or letters.\nIf the file is built differently then the program will glitch." + 
+         "If these instructions are not clear or acceptable to you, please do not use the program for it is not meant for such as you." +
+         "\nIf you would like to continue, please type 1 and then enter.");
+        
+         if (scan.nextInt() != 1) {
+            System.out.println ("Exiting program now.");
+            System.exit (0);
+        }
 
-    System.out.println("\n\nExtracted max is " + extractMax());
-    heapEndPointer--;
+        System.out.println ("Please enter a number that is the 'd' wanted: ");
+        int d = scan.nextInt();
+    
+        System.out.println("Please enter the file PATH:");
+        String str = scan.next();
 
-    System.out.println("\n\nHeap after extract max: ");
-    for (int i = 0; i < heapEndPointer; i++)
-        System.out.print(heap[i] + " ");
+        // Initialising heap
+        DaryHeap dHeap = new DaryHeap (str, d);
+
+        // Displaying message for better readability
+        
+        
+        System.out.println("Built Heap: ");
+        dHeap.print();
+        
+        dHeap.buildHeap();
+        System.out.println("The D-ary Heap after sorting looks like: ");
+        dHeap.print();
+        
+        int element = 3;
+        dHeap.insert(element);
+        heapEndPointer++;
+        
+        System.out.println("\n\nHeap after insertion of " + element + ": ");
+        dHeap.print();
+        
+        System.out.println("\n\nExtracted max is " + dHeap.extractMax());
+        heapEndPointer--;
+        
+        System.out.println("\n\nHeap after extract max: ");
+        dHeap.print();
+    }
 }
