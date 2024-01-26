@@ -1,9 +1,7 @@
-// Java program to implement Max D-ary heap
 import java.util.Scanner;
 import java.io.*;
 import java.lang.System;
 
-// Main class
 public class DaryHeap {
 	private int[] heap;
 	private int heapEndPointer;
@@ -183,7 +181,10 @@ public class DaryHeap {
 
 	// Method 9
 	// main method
-	public static void main(String[] arg)
+	/**
+	 * @param arg
+	 */
+	public void main(String[] arg)
 	{
         Scanner scan = new Scanner(System.in);
         System.out.println ("READ BEFORE USING PROGRAM!\nFOR THE USER'S INFORMATION:\n" +
@@ -199,7 +200,7 @@ public class DaryHeap {
         }
 
         System.out.println ("Please enter a number that is the 'd' wanted: ");
-        int d = scan.nextInt();
+        this.d = scan.nextInt();
     
         System.out.println ("Please enter the file PATH: ");
         String str = scan.next();
@@ -214,5 +215,8 @@ public class DaryHeap {
 		// Print and display the maximum value in heap
 		System.out.println("The max val is "
 						+ dHeap.extractMax());
+
+        //closing scanner
+        scan.close();
 	}
 }
