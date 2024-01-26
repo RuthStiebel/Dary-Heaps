@@ -8,12 +8,9 @@ public class DaryHeap {
 	private final int MAX_SIZE = 5000;
     private int d;
 
-    //colours
-    private final String ANSI_BLACK = "\u001B[30m"; 
-    private final String ANSI_RED = "\u001B[31m"; 
-    private final String ANSI_GREEN = "\u001B[32m"; 
-    private final String ANSI_BLUE = "\u001B[34m"; 
-    private final String ANSI_PURPLE = "\u001B[35m"; 
+    //colours  private final String ANSI_BLACK = "\u001B[30m";  private final String ANSI_RED = "\u001B[31m"; private final String ANSI_GREEN = "\u001B[32m";  private final String ANSI_BLUE = "\u001B[34m"; private final String ANSI_PURPLE = "\u001B[35m"; 
+
+
 
 
    // Initializes a heap with up to maximum capacity from a file
