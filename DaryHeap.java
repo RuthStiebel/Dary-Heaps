@@ -4,80 +4,111 @@ import java.lang.System;
 
 public class DaryHeap {
 
+    //class variables
     private static int[] heap;
     private static int heapEndPointer;
-    private static final int MAX_SIZE = 5000;
+    private static final int MAX_SIZE = 500;
     private static int d;
 
     //formatting
     private static final String ANSI_BLACK_DEFAULT = "\u001B[30m";  
     private static final String ANSI_RED = "\u001B[31m"; 
     private static final String ANSI_GREEN = "\u001B[32m";  
+    private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_BLUE_DARK = "\u001B[34m"; 
     private static final String ANSI_PURPLE = "\u001B[35m"; 
     private static final String ANSI_BLUE_DARK_LIGHT = "\u001B[36m";
     private static final String BOLD_STRING = "\033[0;1m";
     private static final String UNBOLD_STRING = "\u001B[0m";
-
-
    
     /**
-     * Constructor for object of class DaryHeap.
+     * Constructor for objects of class DaryHeap.
      * The time complexity is O(n).
      * The space complexity is O(n).
-     * @param fileName The PATH of the file from which the heap is built 
+     * @param fileName The PATH of the file from which the heap is built.
+     * @param dNum The number that decides how many children each parent could have.
      */
-    public DaryHeap (String fileName, int dNum)
-    {
+    public DaryHeap (String fileName, int dNum) {
+
         // initializes an empty max heap with maximum capacity
         heapEndPointer = 0;
-        heap = new int[MAX_SIZE];
+        heap = new int[MAX_SIZE+1];
         d = dNum;
- 
+
+        //reads input file and places numbers into heap array
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
             String line;
             while ((line = br.readLine()) != null && heapEndPointer < MAX_SIZE) {
                     
-                try {
+                try { //if there is more than just a number in each line then will return an error
                     heap[heapEndPointer]  = Integer.parseInt(line);
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid integer input in line: " + line);
+                    System.out.println(BOLD_STRING + ANSI_YELLOW + "Invalid integer input in line: " + ANSI_BLACK_DEFAULT + line + UNBOLD_STRING);
                 }
                 
-
                 heapEndPointer ++;
             }
 
-            br.close();
+            br.close(); //closes buffer file
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (heapEndPointer == MAX_SIZE)
-            System.out.println("Numbers in file exceeded maximum size allowed (" + MAX_SIZE + "). \nCopied only the first "
-            + MAX_SIZE + " numbers in the file.");
+            System.out.println(BOLD_STRING + ANSI_YELLOW + "Numbers in file exceeded maximum size allowed (" + ANSI_BLACK_DEFAULT + MAX_SIZE + ANSI_YELLOW + "). \nCopied only the first "
+            + ANSI_BLACK_DEFAULT + MAX_SIZE + ANSI_YELLOW + " numbers in the file." + ANSI_BLACK_DEFAULT + UNBOLD_STRING);
     }
 
+    /**
+     * This method turns an unsorted array into a d-ary heap.
+     * The time complexity is O(nlogn).QQ
+     * The space complexity is O(1).
+     */
     public void buildHeap() {
         for (int i = (heapEndPointer - 1) / d; i >= 0; i--)
-            restoreDown(heapEndPointer, i);
+            maxHeap(heapEndPointer, i);
     }
  
-    public void insert(int element) {
-        heap[heapEndPointer - 1] = element;
-        restoreUp(heapEndPointer - 1, d);
+    /**
+     * This method inserts a number into heap and then reorganizes it in order to stay a maximum heap.
+     * If the heap has reached maximum size then the number given will not be added and the user would be duly notified of that fact.
+     * The time complexity is QQ
+     * The space complexity is O(1).
+     * @param num The number to be added.
+     */
+    public void insert(int num) {
+        if (heapEndPointer < MAX_SIZE) {
+            heap[heapEndPointer] = num;
+            heapEndPointer ++;
+            maxHeap(heapEndPointer, 0);
+        }
+        else {
+            System.out.println(BOLD_STRING + ANSI_YELLOW + "Numbers in file reached maximum size allowed (" + ANSI_BLACK_DEFAULT + MAX_SIZE + ANSI_YELLOW + "). " +
+            "\nTherefore the number inputted was not added to heap. " + ANSI_BLACK_DEFAULT + UNBOLD_STRING);
+        }
     }
- 
+    
+    /** 
+     * This method returns the maximum number in the heap.
+     * Inevitably, it would be the first parent.
+     * The time complexity is QQ
+     * The space complexity is O(1).
+     * @return The maximum number
+     */
     public int extractMax() {
+        //saving maximum number
         int max = heap[0];
+        //removing the maximum number and replacing it with the last number in the heap
         heap[0] = heap[heapEndPointer - 1];
-        restoreDown(heapEndPointer - 1, 0);
+        heapEndPointer --;
+        //resorting the heap
+        maxHeap(heapEndPointer, 0);
         return max;
     }
  
-    private void restoreDown(int len, int index) {
+    private void maxHeap(int len, int index) {
         int[] child = new int[d + 1];
         while (true) {
             for (int i = 1; i <= d; i++)
@@ -100,34 +131,35 @@ public class DaryHeap {
             index = maxChildIndex;
         }
     }
- 
-    private void restoreUp(int index, int d) {
-        int parent = (index - 1) / d;
-        while (parent >= 0) {
-            if (heap[index] > heap[parent]) {
-                swap(index, parent);
-                index = parent;
-                parent = (index - 1) / d;
-            } else
-                break;
-        }
-    }
- 
+
+    /**
+     * This method swaps two numbers in the heap.
+     * The time complexity is O(1).
+     * The space complexity is O(1).
+     * @param i The first number to be swapped.
+     * @param j The second number to be swapped.
+     */
     private void swap(int i, int j) {
         int temp = heap[i];
         heap[i] = heap[j];
         heap[j] = temp;
     }
 
+    /**
+     * This method prints the heap in the form of an array.
+     * The time complexity is O(n).
+     * The space complexity is O(1).
+     */
     public void print() {
         for (int i = 0; i < heapEndPointer; i++) {
             System.out.print(heap[i] + "\t");
         }
-        System.out.println(); // for new line
+        System.out.println(); // prints new line at the end of the heap
     }
 
-
-
+    /**
+     * Main fuction.
+     */
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
@@ -154,8 +186,6 @@ public class DaryHeap {
         DaryHeap dHeap = new DaryHeap (str, d);
 
         // Displaying message for better readability
-        
-        
         System.out.println(BOLD_STRING + "Built Heap: " + UNBOLD_STRING);
         dHeap.print();
         
@@ -163,15 +193,13 @@ public class DaryHeap {
         System.out.println(BOLD_STRING + "The D-ary Heap after sorting looks like: " + UNBOLD_STRING);
         dHeap.print();
         
-        int element = 3;
-        dHeap.insert(element);
-        heapEndPointer++;
+        int num = 4;
+        dHeap.insert(num);
         
-        System.out.println(BOLD_STRING + "\n\nHeap after insertion of " + element + ": " + UNBOLD_STRING);
+        System.out.println(BOLD_STRING + "\n\nHeap after insertion of " + num + ": " + UNBOLD_STRING);
         dHeap.print();
         
         System.out.println(BOLD_STRING + "\n\nExtracted max is " + dHeap.extractMax());
-        heapEndPointer--;
         
         System.out.println(BOLD_STRING + "\n\nHeap after extract max: " + UNBOLD_STRING);
         dHeap.print();
