@@ -167,21 +167,8 @@ public class DaryHeap {
      * The space complexity is O(1).
      */
     public void print() {
-        int i = 1, counter = 0;
-        //System.out.println("Level 0\n" + heap[0]);
-        while (i < heapEndPointer) {
-            if (i%d == 0) {
-                System.out.println("\n");
-                System.out.println("Level " + i);
-            }
-
-            while (counter < i*d && i+counter < heapEndPointer)
-            {
-                System.out.print(heap[i+counter-1] + "\t");
-                counter ++;
-            }
-            i += counter;
-            counter = 0;
+        for (int i = 0; i < heapEndPointer; i++) {
+            System.out.print(heap[i] + "\t");
         }
         System.out.println(); // prints new line at the end of the heap
     }
