@@ -162,17 +162,27 @@ public class DaryHeap {
     }
 
     /**
+     * This method increases the value of a number at a certain index in the heap by given number.
+     * @param index Index of number to be increased
+     * @param k Number to be added
+     */
+    public void increaseKey (int index, int k) {
+        heap[index] = heap[index] + k;
+        maxHeap(heapEndPointer, index);
+    }
+    /**
      * This method prints the heap in the form of an array.
      * The time complexity is O(n).
      * The space complexity is O(1).
      */
     public void print() {
+
         for (int i = 0; i < heapEndPointer; i++) {
             System.out.print(heap[i] + "\t");
         }
         System.out.println(); // prints new line at the end of the heap
     }
-
+//
     /**
      * Main fuction.
      */
