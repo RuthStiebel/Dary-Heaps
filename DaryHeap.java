@@ -12,15 +12,16 @@ public class DaryHeap {
     private static int d;
 
     //formatting
-    private static final String ANSI_BLACK_DEFAULT = "\u001B[30m";  
-    private static final String ANSI_RED = "\u001B[31m"; 
-    private static final String ANSI_GREEN = "\u001B[32m";  
-    private static final String ANSI_YELLOW = "\u001B[33m";
-    private static final String ANSI_BLUE_DARK = "\u001B[34m"; 
-    private static final String ANSI_PURPLE = "\u001B[35m"; 
-    private static final String ANSI_BLUE_DARK_LIGHT = "\u001B[36m";
-    private static final String BOLD_STRING = "\033[0;1m";
-    private static final String UNBOLD_STRING = "\u001B[0m";
+    private static final String BLACK = "\u001B[30m";  
+    private static final String RED = "\u001B[31m"; 
+    private static final String GREEN = "\u001B[32m";  
+    private static final String YELLOW = "\u001B[33m";
+    private static final String BLUE_DARK = "\u001B[34m"; 
+    private static final String PURPLE = "\u001B[35m"; 
+    private static final String BLUE_LIGHT = "\u001B[36m";
+    private static final String BOLD = "\033[0;1m";
+    private static final String UNDERLINE = "\033[0;4m";
+    private static final String RESET = "\033[0m";
    
     /**
      * Constructor for objects of class DaryHeap.
@@ -43,9 +44,9 @@ public class DaryHeap {
             while ((line = br.readLine()) != null && heapEndPointer < MAX_SIZE) {
                     
                 try { //if there is more than just a number in each line then will return an error
-                    heap[heapEndPointer]  = Integer.parseInt(line);
+                    heap[heapEndPointer] = Integer.parseInt(line);
                 } catch (NumberFormatException e) {
-                    System.out.println(BOLD_STRING + ANSI_YELLOW + "Invalid integer input in line: " + ANSI_BLACK_DEFAULT + line + UNBOLD_STRING);
+                    System.out.println(BOLD + YELLOW + "Invalid integer input in line: " + BLACK + line + RESET);
                 }
                 
                 heapEndPointer ++;
@@ -58,8 +59,8 @@ public class DaryHeap {
         }
 
         if (heapEndPointer == MAX_SIZE)
-            System.out.println(BOLD_STRING + ANSI_YELLOW + "Numbers in file exceeded maximum size allowed (" + ANSI_BLACK_DEFAULT + MAX_SIZE + ANSI_YELLOW + "). \nCopied only the first "
-            + ANSI_BLACK_DEFAULT + MAX_SIZE + ANSI_YELLOW + " numbers in the file." + ANSI_BLACK_DEFAULT + UNBOLD_STRING);
+            System.out.println(BOLD + YELLOW + "Numbers in file exceeded maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). \nCopied only the first "
+            + BLACK + MAX_SIZE + YELLOW + " numbers in the file." + RESET);
     }
 
     /**
@@ -86,8 +87,8 @@ public class DaryHeap {
             maxHeap(heapEndPointer, 0);
         }
         else {
-            System.out.println(BOLD_STRING + ANSI_YELLOW + "Numbers in file reached maximum size allowed (" + ANSI_BLACK_DEFAULT + MAX_SIZE + ANSI_YELLOW + "). " +
-            "\nTherefore the number inputted was not added to heap. " + ANSI_BLACK_DEFAULT + UNBOLD_STRING);
+            System.out.println(BOLD + YELLOW + "Numbers in file reached maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). " +
+            "\nTherefore the number inputted was not added to heap. " + RESET);
         }
     }
     
@@ -167,18 +168,41 @@ public class DaryHeap {
      * @param k Number to be added
      */
     public void increaseKey (int index, int k) {
+        //increasing number in heap by given 'k'
         heap[index] = heap[index] + k;
-        maxHeap(heapEndPointer, index);
+        
+        // Traverse up and fix violated property
+        int i = 0;
+        while (heap[index] > heap[index-i]) {
+            swap(index, index-i);
+            i++;
+        }
     }
+    
     /**
      * This method prints the heap in the form of an array.
      * The time complexity is O(n).
      * The space complexity is O(1).
      */
     public void print() {
-
-        for (int i = 0; i < heapEndPointer; i++) {
-            System.out.print(heap[i] + "\t");
+        int level = 1, index = 1, counter = 0;
+        System.out.println(BOLD + UNDERLINE + "Level 0: \n" + RESET + heap[0]); 
+        while (level < heapEndPointer/d) {
+            System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ": " + RESET); 
+            while (counter < d*level) {
+                System.out.print(heap[index] + "\t");
+                counter++;
+                index++;
+            }
+            counter = 0;
+            level++;
+        }
+        if (index < heapEndPointer) {
+            System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ": " + RESET); 
+            while (index < heapEndPointer) {
+                System.out.print(heap[index] + "\t");
+                index++;
+            }
         }
         System.out.println(); // prints new line at the end of the heap
     }
@@ -189,45 +213,50 @@ public class DaryHeap {
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
-        System.out.println (ANSI_RED + "READ BEFORE USING PROGRAM!\n\n" + ANSI_BLUE_DARK + "FOR THE USER'S INFORMATION:\n\n" + ANSI_BLACK_DEFAULT +
-         "This program " + ANSI_PURPLE + "does not " + ANSI_BLACK_DEFAULT + "check that the \"d\" entered is a valid number.\n" +
-         "This program " + ANSI_PURPLE + "does not " + ANSI_BLACK_DEFAULT + "check that the file PATH entered is correct and that the file residing there is not empty.\n" +
+        System.out.println (BOLD + BLUE_DARK + "\nREAD BEFORE USING PROGRAM - FOR THE USER'S INFORMATION:\n" + RESET + 
+         "This program " + UNDERLINE + "does not " + RESET + "check that the \"d\" entered is a valid number.\n" +
+         "This program " + UNDERLINE + "does not " + RESET + "check that the file PATH entered is correct and that the file residing there is not empty.\n" +
          "Each number in the file should be on a different line than the one before it, with no other symbols or letters.\n" + 
-         ANSI_BLUE_DARK_LIGHT + "If the file given is built differently then specified then the program will glitch." + ANSI_BLACK_DEFAULT +
-         "\n\nIf these instructions are not clear or acceptable to you, please " + ANSI_RED + "do not use the program for it is not meant for such as you." +
-         ANSI_GREEN + "\nIf you would like to continue, please type 1 and then enter.");
+          BLUE_LIGHT + "If the file given is built differently then specified then the program will glitch." + RESET + BOLD +
+         "\n\nIf these instructions are not clear or acceptable to you, please - \n" + PURPLE + "DO NOT use the program for it is not meant for such as you!\n" + RESET +
+          GREEN + "\nIf you would like to continue, please type 1 and then enter." + RESET);
         
          if (scan.nextInt() != 1) {
-            System.out.println (ANSI_PURPLE + "Exiting program now."  + ANSI_BLACK_DEFAULT);
+            System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
             System.exit (0);
         }
 
         System.out.println ("Please enter a number that is the 'd' wanted and then press enter: ");
         int d = scan.nextInt();
     
-        System.out.println("Please enter the file PATH and then press enter:" + ANSI_BLACK_DEFAULT);
+        System.out.println("Please enter the file PATH and then press enter:" + RESET);
         String str = scan.next();
 
         // Initialising heap
         DaryHeap dHeap = new DaryHeap (str, d);
 
         // Displaying message for better readability
-        System.out.println(BOLD_STRING + "Built Heap: " + UNBOLD_STRING);
+        System.out.println(BOLD + "Built Heap: " + RESET);
         dHeap.print();
         
         dHeap.buildHeap();
-        System.out.println(BOLD_STRING + "The D-ary Heap after sorting looks like: " + UNBOLD_STRING);
+        System.out.println(BOLD + "The D-ary Heap after sorting looks like: " + RESET);
         dHeap.print();
         
         int num = 4;
         dHeap.insert(num);
         
-        System.out.println(BOLD_STRING + "\n\nHeap after insertion of " + num + ": " + UNBOLD_STRING);
+        System.out.println(BOLD + "\n\nHeap after insertion of " + num + ": " + RESET);
         dHeap.print();
         
-        System.out.println(BOLD_STRING + "\n\nExtracted max is " + dHeap.extractMax());
+        System.out.println(BOLD + "\n\nExtracted max is " + dHeap.extractMax());
         
-        System.out.println(BOLD_STRING + "\n\nHeap after extract max: " + UNBOLD_STRING);
+        System.out.println(BOLD + "\n\nHeap after extract max: " + RESET);
+        dHeap.print();        
+        
+        int key = 4;
+        dHeap.increaseKey(2, key);
+        System.out.println(BOLD + "\n\nHeap afterincrease key: " + RESET);
         dHeap.print();
 
         //closing scanner
