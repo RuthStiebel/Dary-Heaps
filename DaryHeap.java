@@ -8,6 +8,7 @@ public class DaryHeap {
     private static int[] heap;
     private static int heapEndPointer;
     private static final int MAX_SIZE = 500;
+    private static final int PLACEHOLDER_NUM = -500000;
     private static int d;
 
     //formatting
@@ -108,21 +109,36 @@ public class DaryHeap {
         return max;
     }
  
+    /**
+     * This method turns a regular heap into a maximum heap.
+     * @param len The length of the heap.
+     * @param index The index from which to start sorting.
+     */
     private void maxHeap(int len, int index) {
-        int[] child = new int[d + 1];
+
+        //initializing an array with maximum amount of leaves per one parent
+        int[] children = new int[d + 1];
+
+        //sorting the heap
         while (true) {
-            for (int i = 1; i <= d; i++)
-                child[i] = (d * index + i) < len ? (d * index + i) : -1;
+
+            //placing into children array the children values - the last child will get the value of PLACEHOLDER_NUM
+            for (int i = 1; i <= d; i++) 
+                children[i] = (d * index + i) < len ? (d * index + i) : PLACEHOLDER_NUM;
  
-            int maxChild = -1, maxChildIndex = 0;
-            for (int i = 1; i <= d; i++) {
-                if (child[i] != -1 && heap[child[i]] > maxChild) {
-                    maxChildIndex = child[i];
-                    maxChild = heap[child[i]];
+            //sorting the 
+            int maxChild = PLACEHOLDER_NUM, maxChildIndex = 0;
+            for (int i = 1; i <= d; i++) { //time complexity is O(d)
+                //if the children values aren't finished, and the value of the current child is larger than the current maximum value 
+                //then updates maximum value and index
+                if (children[i] != PLACEHOLDER_NUM && heap[children[i]] > maxChild) {
+                    maxChildIndex = children[i];
+                    maxChild = heap[children[i]];
                 }
             }
- 
-            if (maxChild == -1)
+            
+            //stopping condition
+            if (maxChild == PLACEHOLDER_NUM)
                 break;
  
             if (heap[index] < heap[maxChildIndex])
@@ -151,8 +167,21 @@ public class DaryHeap {
      * The space complexity is O(1).
      */
     public void print() {
-        for (int i = 0; i < heapEndPointer; i++) {
-            System.out.print(heap[i] + "\t");
+        int i = 1, counter = 0;
+        //System.out.println("Level 0\n" + heap[0]);
+        while (i < heapEndPointer) {
+            if (i%d == 0) {
+                System.out.println("\n");
+                System.out.println("Level " + i);
+            }
+
+            while (counter < i*d && i+counter < heapEndPointer)
+            {
+                System.out.print(heap[i+counter-1] + "\t");
+                counter ++;
+            }
+            i += counter;
+            counter = 0;
         }
         System.out.println(); // prints new line at the end of the heap
     }
