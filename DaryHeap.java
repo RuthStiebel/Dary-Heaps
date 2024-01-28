@@ -65,7 +65,7 @@ public class DaryHeap {
 
     /**
      * This method turns an unsorted array into a d-ary heap.
-     * The time complexity is O(nlogn).QQ
+     * The time complexity is O(nlogn).
      * The space complexity is O(1).
      */
     public void buildHeap() {
@@ -96,7 +96,7 @@ public class DaryHeap {
      * This method removes number given from heap and then reorganizes it in order to stay a maximum heap.
      * If the number appears multiple times then the first instance of the number will be removed.
      * If the number isn't in the heap then nothing will happen and the user would be duly notified of that fact.
-     * The time complexity is QQ
+     * The time complexity is O(logn).
      * The space complexity is O(1).
      * @param num The number to be added.
      */
@@ -137,7 +137,7 @@ public class DaryHeap {
     /** 
      * This method returns the maximum number in the heap.
      * Inevitably, it would be the first parent.
-     * The time complexity is QQ
+     * The time complexity is O(logn).
      * The space complexity is O(1).
      * @return The maximum number
      */
@@ -154,6 +154,8 @@ public class DaryHeap {
  
     /**
      * This method turns a regular heap into a maximum heap.
+     * The time complexity is O(logn).
+     * The space complexity is O(1).
      * @param len The length of the heap.
      * @param index The index from which to start sorting.
      */
@@ -184,6 +186,7 @@ public class DaryHeap {
             if (maxChild == PLACEHOLDER_NUM)
                 break;
  
+            //swapping values when needed
             if (heap[index] < heap[maxChildIndex])
                 swap(index, maxChildIndex);
  
