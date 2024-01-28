@@ -91,6 +91,48 @@ public class DaryHeap {
             "\nTherefore the number inputted was not added to heap. " + RESET);
         }
     }
+
+    /**
+     * This method removes number given from heap and then reorganizes it in order to stay a maximum heap.
+     * If the number appears multiple times then the first instance of the number will be removed.
+     * If the number isn't in the heap then nothing will happen and the user would be duly notified of that fact.
+     * The time complexity is QQ
+     * The space complexity is O(1).
+     * @param num The number to be added.
+     */
+    public void remove (int num) {
+        int index = 0;
+        //finding number in heap
+        while (index < heapEndPointer && heap[index] != num)
+            index++;
+            
+        if (index == heapEndPointer) { //the number wasn't found
+        System.out.println(BOLD + YELLOW + "Number entered (" + BLACK + num + YELLOW + ") isn't in the heap. " +
+            "\nTherefore it could not be removed. " + RESET);
+        }
+        else {
+            heap[index] =  heap[heapEndPointer - 1];
+            heapEndPointer --;
+            maxHeap(heapEndPointer, 0);
+        }
+    }
+    
+    /**
+     * This method increases the value of a number at a certain index in the heap by given number.
+     * @param index Index of number to be increased
+     * @param k Number to be added
+     */
+    public void increaseKey (int index, int k) {
+        //increasing number in heap by given 'k'
+        heap[index] = heap[index] + k;
+        
+        // Traverse up and fix violated property
+        int i = 0;
+        while (heap[index] > heap[index-i]) {
+            swap(index, index-i);
+            i++;
+        }
+    }
     
     /** 
      * This method returns the maximum number in the heap.
@@ -162,22 +204,6 @@ public class DaryHeap {
         heap[j] = temp;
     }
 
-    /**
-     * This method increases the value of a number at a certain index in the heap by given number.
-     * @param index Index of number to be increased
-     * @param k Number to be added
-     */
-    public void increaseKey (int index, int k) {
-        //increasing number in heap by given 'k'
-        heap[index] = heap[index] + k;
-        
-        // Traverse up and fix violated property
-        int i = 0;
-        while (heap[index] > heap[index-i]) {
-            swap(index, index-i);
-            i++;
-        }
-    }
     
     /**
      * This method prints the heap in the form of an array.
@@ -186,10 +212,14 @@ public class DaryHeap {
      */
     public void print() {
         int level = 1, index = 1, counter = 0;
-        System.out.println(BOLD + UNDERLINE + "Level 0: \n" + RESET + heap[0]); 
+        //printing first level
+        System.out.print("\n");
+        System.out.println(BOLD + UNDERLINE + "Level 0:\n" + RESET + heap[0]); 
+
+        //printing heap in levels according to 'd'
         while (level < heapEndPointer/d) {
-            System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ": " + RESET); 
-            while (counter < d*level) {
+            System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ":" + RESET); 
+            while (counter < d*level && index < heapEndPointer) {
                 System.out.print(heap[index] + "\t");
                 counter++;
                 index++;
@@ -197,6 +227,8 @@ public class DaryHeap {
             counter = 0;
             level++;
         }
+
+        //printing the leftover leaves
         if (index < heapEndPointer) {
             System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ": " + RESET); 
             while (index < heapEndPointer) {
@@ -259,6 +291,9 @@ public class DaryHeap {
         System.out.println(BOLD + "\n\nHeap afterincrease key: " + RESET);
         dHeap.print();
 
+        dHeap.remove(12);
+        System.out.println(BOLD + "\n\nHeap after removing 4: " + RESET);
+        dHeap.print();
         //closing scanner
         scan.close();
 
