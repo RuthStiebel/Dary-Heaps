@@ -267,34 +267,24 @@ public class DaryHeap {
 
         // Initialising heap
         DaryHeap dHeap = new DaryHeap (str, d);
+        dHeap.buildHeap();
 
         // Displaying message for better readability
-        System.out.println(BOLD + "Built Heap: " + RESET);
+        System.out.println(BOLD + "Heap built: " + RESET);
         dHeap.print();
         
-        dHeap.buildHeap();
-        System.out.println(BOLD + "The D-ary Heap after sorting looks like: " + RESET);
-        dHeap.print();
-        
-        int num = 4;
-        dHeap.insert(num);
-        
-        System.out.println(BOLD + "\n\nHeap after insertion of " + num + ": " + RESET);
-        dHeap.print();
-        
-        System.out.println(BOLD + "\n\nExtracted max is " + dHeap.extractMax());
-        
-        System.out.println(BOLD + "\n\nHeap after extract max: " + RESET);
-        dHeap.print();        
-        
-        int key = 4;
-        dHeap.increaseKey(2, key);
-        System.out.println(BOLD + "\n\nHeap afterincrease key: " + RESET);
-        dHeap.print();
+        System.out.println("Would you like to do a few actions with the heap above that you built?\n" +
+        "If yes, press 1. Else the program will exit.");
 
-        dHeap.remove(12);
-        System.out.println(BOLD + "\n\nHeap after removing 4: " + RESET);
+        if (scan.nextInt() != 1) {
+            System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
+            System.exit (0);
+        }
+
+        
         dHeap.print();
+        
+
         //closing scanner
         scan.close();
 
