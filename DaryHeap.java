@@ -76,7 +76,7 @@ public class DaryHeap {
     /**
      * This method inserts a number into heap and then reorganizes it in order to stay a maximum heap.
      * If the heap has reached maximum size then the number given will not be added and the user would be duly notified of that fact.
-     * The time complexity is QQ
+     * The time complexity is O(logn).
      * The space complexity is O(1).
      * @param num The number to be added.
      */
@@ -93,22 +93,18 @@ public class DaryHeap {
     }
 
     /**
-     * This method removes number given from heap and then reorganizes it in order to stay a maximum heap.
-     * If the number appears multiple times then the first instance of the number will be removed.
-     * If the number isn't in the heap then nothing will happen and the user would be duly notified of that fact.
+     * This method removes number in index given from heap and then reorganizes it in order to stay a maximum heap.
+     * If the index is invalid then nothing will happen and the user would be duly notified of that fact.
      * The time complexity is O(logn).
      * The space complexity is O(1).
-     * @param num The number to be added.
+     * @param index The index of the number to be removed.
      */
-    public void remove (int num) {
-        int index = 0;
-        //finding number in heap
-        while (index < heapEndPointer && heap[index] != num)
-            index++;
-            
-        if (index == heapEndPointer) { //the number wasn't found
-        System.out.println(BOLD + YELLOW + "Number entered (" + BLACK + num + YELLOW + ") isn't in the heap. " +
-            "\nTherefore it could not be removed. " + RESET);
+    public void remove (int index) {
+
+        //if the index is larger than the number of number in the heap or is a negative number
+        if (index >= heapEndPointer || index < 0) { 
+        System.out.println(BOLD + YELLOW + "Index entered (" + BLACK + index + YELLOW + ")is invalid. " +
+            "\nTherefore nothing happened. " + RESET);
         }
         else {
             heap[index] =  heap[heapEndPointer - 1];
@@ -119,6 +115,8 @@ public class DaryHeap {
     
     /**
      * This method increases the value of a number at a certain index in the heap by given number.
+     * The time complexity is O(n\d).
+     * The space complexity is O(1).
      * @param index Index of number to be increased
      * @param k Number to be added
      */
