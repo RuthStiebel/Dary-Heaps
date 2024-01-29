@@ -25,6 +25,7 @@ public class DaryHeap {
    
     /**
      * Constructor for objects of class DaryHeap.
+     * Time complexity is O(n).
      * @param fileName The PATH of the file from which the heap is built.
      * @param dNum The number that decides how many children each parent could have.
      */
@@ -44,7 +45,7 @@ public class DaryHeap {
                 try { //if there is more than just a number in each line then will return an error
                     heap[heapEndPointer] = Integer.parseInt(line);
                 } catch (NumberFormatException e) {
-                    System.out.println(BOLD + YELLOW + "Invalid integer input in line: " + BLACK + line + RESET);
+                    System.out.println(YELLOW + "Invalid integer input in line: " + BLACK + line + RESET);
                 }
                 
                 heapEndPointer ++;
@@ -57,24 +58,26 @@ public class DaryHeap {
         }
 
         if (heapEndPointer == MAX_SIZE)
-            System.out.println(BOLD + YELLOW + "Numbers in file exceeded maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). \nCopied only the first "
+            System.out.println(YELLOW + "Numbers in file exceeded maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). \nCopied only the first "
             + BLACK + MAX_SIZE + YELLOW + " numbers in the file." + RESET);
     }
 
     /**
      * This method turns an unsorted array into a d-ary heap.
+     * Time complexity is O(n).
      */
-    private void buildHeap() {
+    private void buildHeap () {
         for (int i = (heapEndPointer - 1) / d; i >= 0; i--)
             maxHeap(heapEndPointer, i);
     }
 
     /**
      * This method turns a regular heap into a maximum heap.
+     * Time complexity is O(dlogdn).
      * @param len The length of the heap.
      * @param index The index from which to start sorting.
      */
-    private void maxHeap(int len, int index) {
+    private void maxHeap (int len, int index) {
 
         //initializes an array with maximum amount of leaves per one parent
         int[] children = new int[d + 1];
@@ -107,14 +110,15 @@ public class DaryHeap {
                 
                 index = maxChildIndex;
             }
-        }
+    }
         
     /**
      * This method swaps two numbers in the heap.
+     * Time complexity is O(1).
      * @param i The first number to be swapped.
      * @param j The second number to be swapped.
      */
-    private void swap(int i, int j) {
+    private void swap (int i, int j) {
         int temp = heap[i];
         heap[i] = heap[j];
         heap[j] = temp;
@@ -122,21 +126,23 @@ public class DaryHeap {
     
     /**
      * This method returns the index of the parent of the node at given index.
+     * Time complexity is O(1).
      * @param i The index.
      * @return Index of parent of node at index i.
      */
     private int parent (int i) {
-        if (i> (1+d)) //if the index's parent is not the head of the heap
-        return (i-1)/d;
+        if (i > (1 + d)) //if the index's parent is not the head of the heap
+            return (i - 1) / d;
         else 
             return 0;
     }
     /**
      * This method inserts a number into heap and then reorganizes it in order to stay a maximum heap.
      * If the heap has reached maximum size then the number given will not be added and the user would be duly notified of that fact.
+     * Time complexity is O(logdn).
      * @param num The number to be added.
      */
-    public void insert(int num) {
+    public void insert (int num) {
         if (heapEndPointer < MAX_SIZE) {
             heap[heapEndPointer] = num;
             heapEndPointer ++;
@@ -147,7 +153,7 @@ public class DaryHeap {
             System.out.println(GREEN + "Number entered was successfully added to heap!" + RESET);
         }
         else {
-            System.out.println(BOLD + YELLOW + "Numbers in file reached maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). " +
+            System.out.println(YELLOW + "Numbers in file reached maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). " +
             "\nTherefore the number inputted was not added to heap. " + RESET);
         }
     }
@@ -155,13 +161,14 @@ public class DaryHeap {
     /**
      * This method removes number in index given from heap and then reorganizes it in order to stay a maximum heap.
      * If the index is invalid then nothing will happen and the user would be duly notified of that fact.
+     * Time complexity is O(dlogdn).
      * @param index The index of the number to be removed.
      */
     public void remove (int index) {
        
         //if the index is larger than the number of number in the heap or is a negative number
         if (index >= heapEndPointer || index < 0) { 
-            System.out.println(BOLD + YELLOW + "Index entered (" + BLACK + index + YELLOW + ") is invalid. " +
+            System.out.println(YELLOW + "Index entered (" + BLACK + index + YELLOW + ") is invalid. " +
             "\nTherefore nothing happened. " + RESET);
         }
         else {
@@ -175,6 +182,7 @@ public class DaryHeap {
     /**
      * This method changes the value of a number at a certain index in the heap if the given number is larger than the number at the index.
      * Else, the number does not change.
+     * Time complexity is O(logdn).
      * @param index Index of number to be compared and maybe changed to 'k'
      * @param k Number to change number at index if larger
      */
@@ -197,9 +205,10 @@ public class DaryHeap {
     /** 
      * This method returns the maximum number in the heap.
      * Inevitably, it would be the first parent.
+     * Time complexity is O(dlogdn).
      * @return The maximum number
      */
-    public int extractMax() {
+    public int extractMax () {
         //saves maximum number
         int max = heap[0];
         
@@ -207,7 +216,7 @@ public class DaryHeap {
         heap[0] = heap[heapEndPointer - 1];
         heapEndPointer --;
         
-        //fixes the heap
+        //fixes heap
         maxHeap(heapEndPointer, 0);
         System.out.println(GREEN + "The maximum number was extracted successfully!" + RESET);            
         return max;
@@ -215,8 +224,9 @@ public class DaryHeap {
     
     /**
      * This method prints the heap in the form of an array.
+     * Time complexity is O(n).
      */
-    public void print() {
+    public void print () {
         int level = 1, index = 1, counter = 0;
         //prints the first level
         System.out.print("\n");
@@ -248,7 +258,7 @@ public class DaryHeap {
     /**
      * Main fuction.
      */
-    public static void main(String[] args) {
+    public static void main (String[] args) {
 
         Scanner scan = new Scanner(System.in);
         System.out.println (BOLD + BLUE_DARK + "\nREAD BEFORE USING PROGRAM - FOR THE USER'S INFORMATION:\n" + RESET + 
