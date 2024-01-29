@@ -32,7 +32,7 @@ public class DaryHeap {
      */
     private DaryHeap (String fileName, int dNum) {
 
-        // initializes an empty max heap with maximum capacity
+        //initializes an empty max heap with maximum capacity
         heapEndPointer = 0;
         heap = new int[MAX_SIZE+1];
         d = dNum;
@@ -82,17 +82,17 @@ public class DaryHeap {
      */
     private void maxHeap(int len, int index) {
 
-        //initializing an array with maximum amount of leaves per one parent
+        //initializes an array with maximum amount of leaves per one parent
         int[] children = new int[d + 1];
 
-        //sorting the heap
+        //sorts the heap
         while (true) {
 
-            //placing into children array the children values - the last child will get the value of PLACEHOLDER_NUM
+            //places into children array the children values - the last child will get the value of PLACEHOLDER_NUM
             for (int i = 1; i <= d; i++) 
                 children[i] = (d * index + i) < len ? (d * index + i) : PLACEHOLDER_NUM;
  
-            //sorting the 
+            //sortes the children's array
             int maxChild = PLACEHOLDER_NUM, maxChildIndex = 0;
             for (int i = 1; i <= d; i++) { //time complexity is O(d)
                 //if the children values aren't finished, and the value of the current child is larger than the current maximum value 
@@ -107,7 +107,7 @@ public class DaryHeap {
             if (maxChild == PLACEHOLDER_NUM)
                 break;
  
-                //swapping values when needed
+                //swaps values when needed
                 if (heap[index] < heap[maxChildIndex])
                 swap(index, maxChildIndex);
                 
@@ -176,10 +176,10 @@ public class DaryHeap {
      * @param k Number to be added
      */
     public void increaseKey (int index, int k) {
-        //increasing number in heap by given 'k'
+        //increases number in heap by given 'k'
         heap[index] = heap[index] + k;
                
-        // Traverse up and fix violated property
+        //fixes heap
         int i = 0;
         while (heap[index] > heap[index-i]) {
             swap(index, index-i);
@@ -195,12 +195,14 @@ public class DaryHeap {
      * @return The maximum number
      */
     public int extractMax() {
-        //saving maximum number
+        //saves maximum number
         int max = heap[0];
-        //removing the maximum number and replacing it with the last number in the heap
+
+        //removes the maximum number and replacing it with the last number in the heap
         heap[0] = heap[heapEndPointer - 1];
         heapEndPointer --;
-        //resorting the heap
+
+        //fixes the heap
         maxHeap(heapEndPointer, 0);
         return max;
     }
@@ -212,11 +214,11 @@ public class DaryHeap {
      */
     public void print() {
         int level = 1, index = 1, counter = 0;
-        //printing first level
+        //prints the first level
         System.out.print("\n");
         System.out.println(BOLD + UNDERLINE + "Level 0:\n" + RESET + heap[0]); 
 
-        //printing heap in levels according to 'd'
+        //prints heap in levels according to 'd'
         while (level < heapEndPointer/d) {
             System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ":" + RESET); 
             while (counter < d*level && index < heapEndPointer) {
@@ -228,7 +230,7 @@ public class DaryHeap {
             level++;
         }
 
-        //printing the leftover leaves
+        //prints the leftover leaves
         if (index < heapEndPointer) {
             System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ": " + RESET); 
             while (index < heapEndPointer) {
@@ -264,11 +266,11 @@ public class DaryHeap {
         System.out.println("Please enter the file PATH and then press enter:" + RESET);
         String str = scan.next();
 
-        // Initialising heap
+        //initialises heap
         DaryHeap dHeap = new DaryHeap (str, d);
         dHeap.buildHeap();
 
-        // Displaying message for better readability
+        //displays message for better readability
         System.out.println(BOLD + "Heap built: " + RESET);
         dHeap.print();
         
@@ -279,6 +281,8 @@ public class DaryHeap {
             System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
             System.exit (0);
         }
+
+        //processes actions on the heap
         int flag = 1;
         System.out.println("It has been understood that you wish to input commands." + 
         "\nThe program will continue to prompt you for new commands until you type \"exit\" or an illegal command.");
@@ -317,7 +321,7 @@ public class DaryHeap {
             }
         }
 
-        //closing scanner
+        //closes scanner
         scan.close();
 
     }
