@@ -129,7 +129,10 @@ public class DaryHeap {
         if (heapEndPointer < MAX_SIZE) {
             heap[heapEndPointer] = num;
             heapEndPointer ++;
-            maxHeap(heapEndPointer, 0);
+            for (int i = 1; i <= heapEndPointer; i++ ) {
+                if (heap[heapEndPointer] > heap[heapEndPointer-i])
+                    swap(heapEndPointer, heapEndPointer-i);
+            }
             System.out.println(GREEN + "Number entered was successfully added to heap!" + RESET);
         }
         else {
