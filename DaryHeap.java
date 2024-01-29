@@ -161,7 +161,7 @@ public class DaryHeap {
        
         //if the index is larger than the number of number in the heap or is a negative number
         if (index >= heapEndPointer || index < 0) { 
-            System.out.println(BOLD + YELLOW + "Index entered (" + BLACK + index + YELLOW + ")is invalid. " +
+            System.out.println(BOLD + YELLOW + "Index entered (" + BLACK + index + YELLOW + ") is invalid. " +
             "\nTherefore nothing happened. " + RESET);
         }
         else {
