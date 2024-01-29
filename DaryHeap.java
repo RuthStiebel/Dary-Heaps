@@ -119,7 +119,18 @@ public class DaryHeap {
         heap[i] = heap[j];
         heap[j] = temp;
     }
-        
+    
+    /**
+     * This method returns the index of the parent of the node at given index.
+     * @param i The index.
+     * @return Index of parent of node at index i.
+     */
+    private int parent (int i) {
+        if (i> (1+d)) //if the index's parent is not the head of the heap
+        return (i-1)/d;
+        else 
+            return 0;
+    }
     /**
      * This method inserts a number into heap and then reorganizes it in order to stay a maximum heap.
      * If the heap has reached maximum size then the number given will not be added and the user would be duly notified of that fact.
@@ -129,9 +140,9 @@ public class DaryHeap {
         if (heapEndPointer < MAX_SIZE) {
             heap[heapEndPointer] = num;
             heapEndPointer ++;
-            for (int i = 1; i <= heapEndPointer; i++ ) {
-                if (heap[heapEndPointer] > heap[heapEndPointer-i])
-                    swap(heapEndPointer, heapEndPointer-i);
+            for (int i = heapEndPointer; i >=0; i--) {
+                if (heap[i] > heap[parent(i)])
+                    swap(i, parent(i));
             }
             System.out.println(GREEN + "Number entered was successfully added to heap!" + RESET);
         }
@@ -294,7 +305,7 @@ public class DaryHeap {
                     dHeap.remove(scan.nextInt());
                     break;
                 case "increasekey":
-                    System.out.println ("Please enter the index of the number to increase and the number by which to increase it by, respectivly:");
+                    System.out.println ("Please enter the index of the number to compare and maybe change and the number you wish to compare and maybe change it to, respectivly:");
                     dHeap.increaseKey(scan.nextInt(), scan.nextInt());   
                     break;
                 case "extractmax":
