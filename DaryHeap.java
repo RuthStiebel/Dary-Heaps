@@ -140,6 +140,7 @@ public class DaryHeap {
             heap[heapEndPointer] = num;
             heapEndPointer ++;
             maxHeap(heapEndPointer, 0);
+            System.out.println(GREEN + "Number entered was successfully added to heap!" + RESET);
         }
         else {
             System.out.println(BOLD + YELLOW + "Numbers in file reached maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). " +
@@ -165,9 +166,10 @@ public class DaryHeap {
             heap[index] =  heap[heapEndPointer - 1];
             heapEndPointer --;
             maxHeap(heapEndPointer, 0);
+            System.out.println(GREEN + "The number at the index entered was successfully removed from heap!" + RESET);
         }
     }
-           
+    
     /**
      * This method increases the value of a number at a certain index in the heap by given number.
      * The time complexity is O(n\d).
@@ -178,15 +180,16 @@ public class DaryHeap {
     public void increaseKey (int index, int k) {
         //increases number in heap by given 'k'
         heap[index] = heap[index] + k;
-               
+        
         //fixes heap
         int i = 0;
         while (heap[index] > heap[index-i]) {
             swap(index, index-i);
             i++;
         }
+        System.out.println(GREEN + "The number at the index entered was successfully increased by key given!" + RESET);            
     }
-           
+    
     /** 
      * This method returns the maximum number in the heap.
      * Inevitably, it would be the first parent.
@@ -197,16 +200,17 @@ public class DaryHeap {
     public int extractMax() {
         //saves maximum number
         int max = heap[0];
-
+        
         //removes the maximum number and replacing it with the last number in the heap
         heap[0] = heap[heapEndPointer - 1];
         heapEndPointer --;
-
+        
         //fixes the heap
         maxHeap(heapEndPointer, 0);
+        System.out.println(GREEN + "The maximum number was extracted successfully!" + RESET);            
         return max;
     }
-        
+    
     /**
      * This method prints the heap in the form of an array.
      * The time complexity is O(n).
@@ -275,7 +279,7 @@ public class DaryHeap {
         dHeap.print();
         
         System.out.println("Would you like to do a few actions with the heap above that you built?\n" +
-        "If yes, press 1. Else the program will exit.");
+        "If yes, type 1 and then enter.");
 
         if (scan.nextInt() != 1) {
             System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
@@ -287,7 +291,7 @@ public class DaryHeap {
         System.out.println("It has been understood that you wish to input commands." + 
         "\nThe program will continue to prompt you for new commands until you type \"exit\" or an illegal command.");
         while (flag == 1) {
-            System.out.println ("Please enter command while making sure that it is spelt correctly.");
+            System.out.println ("Please enter command while making sure that it is spelt correctly and then press enter.");
             String word = scan.next();
             word = word.toLowerCase();
     
