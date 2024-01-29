@@ -30,7 +30,7 @@ public class DaryHeap {
      * @param fileName The PATH of the file from which the heap is built.
      * @param dNum The number that decides how many children each parent could have.
      */
-    public DaryHeap (String fileName, int dNum) {
+    private DaryHeap (String fileName, int dNum) {
 
         // initializes an empty max heap with maximum capacity
         heapEndPointer = 0;
@@ -68,88 +68,11 @@ public class DaryHeap {
      * The time complexity is O(nlogn).
      * The space complexity is O(1).
      */
-    public void buildHeap() {
+    private void buildHeap() {
         for (int i = (heapEndPointer - 1) / d; i >= 0; i--)
             maxHeap(heapEndPointer, i);
     }
- 
-    /**
-     * This method inserts a number into heap and then reorganizes it in order to stay a maximum heap.
-     * If the heap has reached maximum size then the number given will not be added and the user would be duly notified of that fact.
-     * The time complexity is O(logn).
-     * The space complexity is O(1).
-     * @param num The number to be added.
-     */
-    public void insert(int num) {
-        if (heapEndPointer < MAX_SIZE) {
-            heap[heapEndPointer] = num;
-            heapEndPointer ++;
-            maxHeap(heapEndPointer, 0);
-        }
-        else {
-            System.out.println(BOLD + YELLOW + "Numbers in file reached maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). " +
-            "\nTherefore the number inputted was not added to heap. " + RESET);
-        }
-    }
 
-    /**
-     * This method removes number in index given from heap and then reorganizes it in order to stay a maximum heap.
-     * If the index is invalid then nothing will happen and the user would be duly notified of that fact.
-     * The time complexity is O(logn).
-     * The space complexity is O(1).
-     * @param index The index of the number to be removed.
-     */
-    public void remove (int index) {
-
-        //if the index is larger than the number of number in the heap or is a negative number
-        if (index >= heapEndPointer || index < 0) { 
-        System.out.println(BOLD + YELLOW + "Index entered (" + BLACK + index + YELLOW + ")is invalid. " +
-            "\nTherefore nothing happened. " + RESET);
-        }
-        else {
-            heap[index] =  heap[heapEndPointer - 1];
-            heapEndPointer --;
-            maxHeap(heapEndPointer, 0);
-        }
-    }
-    
-    /**
-     * This method increases the value of a number at a certain index in the heap by given number.
-     * The time complexity is O(n\d).
-     * The space complexity is O(1).
-     * @param index Index of number to be increased
-     * @param k Number to be added
-     */
-    public void increaseKey (int index, int k) {
-        //increasing number in heap by given 'k'
-        heap[index] = heap[index] + k;
-        
-        // Traverse up and fix violated property
-        int i = 0;
-        while (heap[index] > heap[index-i]) {
-            swap(index, index-i);
-            i++;
-        }
-    }
-    
-    /** 
-     * This method returns the maximum number in the heap.
-     * Inevitably, it would be the first parent.
-     * The time complexity is O(logn).
-     * The space complexity is O(1).
-     * @return The maximum number
-     */
-    public int extractMax() {
-        //saving maximum number
-        int max = heap[0];
-        //removing the maximum number and replacing it with the last number in the heap
-        heap[0] = heap[heapEndPointer - 1];
-        heapEndPointer --;
-        //resorting the heap
-        maxHeap(heapEndPointer, 0);
-        return max;
-    }
- 
     /**
      * This method turns a regular heap into a maximum heap.
      * The time complexity is O(logn).
@@ -184,14 +107,14 @@ public class DaryHeap {
             if (maxChild == PLACEHOLDER_NUM)
                 break;
  
-            //swapping values when needed
-            if (heap[index] < heap[maxChildIndex])
+                //swapping values when needed
+                if (heap[index] < heap[maxChildIndex])
                 swap(index, maxChildIndex);
- 
-            index = maxChildIndex;
+                
+                index = maxChildIndex;
+            }
         }
-    }
-
+        
     /**
      * This method swaps two numbers in the heap.
      * The time complexity is O(1).
@@ -204,8 +127,84 @@ public class DaryHeap {
         heap[i] = heap[j];
         heap[j] = temp;
     }
-
-    
+        
+    /**
+     * This method inserts a number into heap and then reorganizes it in order to stay a maximum heap.
+     * If the heap has reached maximum size then the number given will not be added and the user would be duly notified of that fact.
+     * The time complexity is O(logn).
+     * The space complexity is O(1).
+     * @param num The number to be added.
+     */
+    public void insert(int num) {
+        if (heapEndPointer < MAX_SIZE) {
+            heap[heapEndPointer] = num;
+            heapEndPointer ++;
+            maxHeap(heapEndPointer, 0);
+        }
+        else {
+            System.out.println(BOLD + YELLOW + "Numbers in file reached maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). " +
+            "\nTherefore the number inputted was not added to heap. " + RESET);
+        }
+    }
+       
+    /**
+     * This method removes number in index given from heap and then reorganizes it in order to stay a maximum heap.
+     * If the index is invalid then nothing will happen and the user would be duly notified of that fact.
+     * The time complexity is O(logn).
+     * The space complexity is O(1).
+     * @param index The index of the number to be removed.
+     */
+    public void remove (int index) {
+       
+        //if the index is larger than the number of number in the heap or is a negative number
+        if (index >= heapEndPointer || index < 0) { 
+            System.out.println(BOLD + YELLOW + "Index entered (" + BLACK + index + YELLOW + ")is invalid. " +
+            "\nTherefore nothing happened. " + RESET);
+        }
+        else {
+            heap[index] =  heap[heapEndPointer - 1];
+            heapEndPointer --;
+            maxHeap(heapEndPointer, 0);
+        }
+    }
+           
+    /**
+     * This method increases the value of a number at a certain index in the heap by given number.
+     * The time complexity is O(n\d).
+     * The space complexity is O(1).
+     * @param index Index of number to be increased
+     * @param k Number to be added
+     */
+    public void increaseKey (int index, int k) {
+        //increasing number in heap by given 'k'
+        heap[index] = heap[index] + k;
+               
+        // Traverse up and fix violated property
+        int i = 0;
+        while (heap[index] > heap[index-i]) {
+            swap(index, index-i);
+            i++;
+        }
+    }
+           
+    /** 
+     * This method returns the maximum number in the heap.
+     * Inevitably, it would be the first parent.
+     * The time complexity is O(logn).
+     * The space complexity is O(1).
+     * @return The maximum number
+     */
+    public int extractMax() {
+        //saving maximum number
+        int max = heap[0];
+        //removing the maximum number and replacing it with the last number in the heap
+        heap[0] = heap[heapEndPointer - 1];
+        heapEndPointer --;
+        //resorting the heap
+        maxHeap(heapEndPointer, 0);
+        return max;
+    }
+        
     /**
      * This method prints the heap in the form of an array.
      * The time complexity is O(n).
@@ -239,7 +238,7 @@ public class DaryHeap {
         }
         System.out.println(); // prints new line at the end of the heap
     }
-//
+
     /**
      * Main fuction.
      */
@@ -280,10 +279,43 @@ public class DaryHeap {
             System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
             System.exit (0);
         }
-
-        
-        dHeap.print();
-        
+        int flag = 1;
+        System.out.println("It has been understood that you wish to input commands." + 
+        "\nThe program will continue to prompt you for new commands until you type \"exit\" or an illegal command.");
+        while (flag == 1) {
+            System.out.println ("Please enter command while making sure that it is spelt correctly.");
+            String word = scan.next();
+            word = word.toLowerCase();
+    
+            switch (word) {
+                case "insert":
+                    System.out.println ("Please enter the number to insert:");
+                    dHeap.insert(scan.nextInt());
+                    break;
+                case "remove":
+                    System.out.println ("Please enter the index of the number to remove:");
+                    dHeap.remove(scan.nextInt());
+                    break;
+                case "increasekey":
+                    System.out.println ("Please enter the index of the number to increase and the number by which to increase it by, respectivly:");
+                    dHeap.increaseKey(scan.nextInt(), scan.nextInt());   
+                    break;
+                case "extractmax":
+                    dHeap.extractMax();  
+                    break;
+                case "print":
+                    dHeap.print();
+                    break;
+                case "exit":
+                    System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
+                    flag = 0;
+                    break;
+                default:
+                    System.out.println(UNDERLINE + RED + "Illegal command. Exiting program now."  + RESET);
+                    flag = 0;
+                    break;
+            }
+        }
 
         //closing scanner
         scan.close();
