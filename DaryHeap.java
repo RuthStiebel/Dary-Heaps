@@ -26,7 +26,6 @@ public class DaryHeap {
     /**
      * Constructor for objects of class DaryHeap.
      * The time complexity is O(n).
-     * The space complexity is O(n).
      * @param fileName The PATH of the file from which the heap is built.
      * @param dNum The number that decides how many children each parent could have.
      */
@@ -65,8 +64,7 @@ public class DaryHeap {
 
     /**
      * This method turns an unsorted array into a d-ary heap.
-     * The time complexity is O(nlogn).
-     * The space complexity is O(1).
+     * The time complexity is O(nlogdn).
      */
     private void buildHeap() {
         for (int i = (heapEndPointer - 1) / d; i >= 0; i--)
@@ -75,8 +73,7 @@ public class DaryHeap {
 
     /**
      * This method turns a regular heap into a maximum heap.
-     * The time complexity is O(logn).
-     * The space complexity is O(1).
+     * The time complexity is O(dlogdn).
      * @param len The length of the heap.
      * @param index The index from which to start sorting.
      */
@@ -118,7 +115,6 @@ public class DaryHeap {
     /**
      * This method swaps two numbers in the heap.
      * The time complexity is O(1).
-     * The space complexity is O(1).
      * @param i The first number to be swapped.
      * @param j The second number to be swapped.
      */
@@ -131,8 +127,7 @@ public class DaryHeap {
     /**
      * This method inserts a number into heap and then reorganizes it in order to stay a maximum heap.
      * If the heap has reached maximum size then the number given will not be added and the user would be duly notified of that fact.
-     * The time complexity is O(logn).
-     * The space complexity is O(1).
+     * The time complexity is O(dlogdn).
      * @param num The number to be added.
      */
     public void insert(int num) {
@@ -151,8 +146,7 @@ public class DaryHeap {
     /**
      * This method removes number in index given from heap and then reorganizes it in order to stay a maximum heap.
      * If the index is invalid then nothing will happen and the user would be duly notified of that fact.
-     * The time complexity is O(logn).
-     * The space complexity is O(1).
+     * The time complexity is O(dlogdn).
      * @param index The index of the number to be removed.
      */
     public void remove (int index) {
@@ -173,7 +167,6 @@ public class DaryHeap {
     /**
      * This method increases the value of a number at a certain index in the heap by given number.
      * The time complexity is O(n\d).
-     * The space complexity is O(1).
      * @param index Index of number to be increased
      * @param k Number to be added
      */
@@ -193,8 +186,7 @@ public class DaryHeap {
     /** 
      * This method returns the maximum number in the heap.
      * Inevitably, it would be the first parent.
-     * The time complexity is O(logn).
-     * The space complexity is O(1).
+     * The time complexity is O(dlogdn).
      * @return The maximum number
      */
     public int extractMax() {
@@ -214,7 +206,6 @@ public class DaryHeap {
     /**
      * This method prints the heap in the form of an array.
      * The time complexity is O(n).
-     * The space complexity is O(1).
      */
     public void print() {
         int level = 1, index = 1, counter = 0;
