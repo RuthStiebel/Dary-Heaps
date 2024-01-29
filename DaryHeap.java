@@ -242,7 +242,7 @@ public class DaryHeap {
                 index++;
             }
         }
-        System.out.println(); // prints new line at the end of the heap
+        System.out.println(); //prints new line at the end of the heap
     }
 
     /**
