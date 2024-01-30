@@ -78,18 +78,18 @@ public class DaryHeap {
      * @param index The index from which to start sorting.
      */
     private void maxHeap(int len, int index) {
-        int child = getMaxChild(index, len);
+        int child = getMaxChild(index, len); //O(d)
     
-        while (child != -1 && heap[child] > heap[index]) {
+        while (child != -1 && heap[child] > heap[index]) { //logdn jumps
             swap(index, child);
             index = child;
-            child = getMaxChild(index, len);
+            child = getMaxChild(index, len); //O(d)
         }
     }
     
     /**
      * This method turns a regular heap into a maximum heap.
-     * Time complexity is O(logdn).
+     * Time complexity is O(d).
      * @param len The length of the heap.
      * @param index The index from which to start checking children nodes.
      * @return The index of the maximum child of a specific parent
@@ -98,10 +98,10 @@ public class DaryHeap {
         int maxChildIndex = -1;
         int maxChildValue = PLACEHOLDER_NUM;
     
-        for (int i = 1; i <= d; i++) {
+        for (int i = 1; i <= d; i++) { //O(d)
             int childIndex = d * index + i;
     
-            if (childIndex < len && heap[childIndex] > maxChildValue) {
+            if (childIndex < len && heap[childIndex] > maxChildValue) { 
                 maxChildIndex = childIndex;
                 maxChildValue = heap[childIndex];
             }
@@ -224,32 +224,39 @@ public class DaryHeap {
      * Time complexity is O(n).
      */
     public void print () {
-        int level = 1, index = 1, counter = 0;
-        //prints the first level
-        System.out.print("\n");
-        System.out.println(BOLD + UNDERLINE + "Level 0:\n" + RESET + heap[0]); 
+        int level = 1, index = 1, counter = 0, dCounter = 1;
+        if (heapEndPointer > 0) {
 
-        //prints heap in levels according to 'd'
-        while (level < heapEndPointer/d) {
-            System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ":" + RESET); 
-            while (counter < d*level && index < heapEndPointer) {
-                System.out.print(heap[index] + "\t");
-                counter++;
-                index++;
+            //prints the first level
+            System.out.print("\n");
+            System.out.println(BOLD + UNDERLINE + "Level 0:\n" + RESET + heap[0]); 
+    
+            //prints heap in levels according to 'd'
+            while (level < heapEndPointer/d && index < heapEndPointer) {
+                System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ":" + RESET); 
+                while (counter < d*dCounter && index < heapEndPointer) {
+                    System.out.print(heap[index] + "\t");
+                    counter++;
+                    index++;
+                }
+                dCounter = counter;
+                counter = 0;
+                level++;
             }
-            counter = 0;
-            level++;
-        }
-
-        //prints the leftover leaves
-        if (index < heapEndPointer) {
-            System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ": " + RESET); 
-            while (index < heapEndPointer) {
-                System.out.print(heap[index] + "\t");
-                index++;
+            
+            //prints the leftover leaves
+            if (index < heapEndPointer) {
+                System.out.println(BOLD + UNDERLINE + level + ": " + heapEndPointer/d + RESET); 
+                System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ": " + RESET); 
+                while (index < heapEndPointer) {
+                    System.out.print(heap[index] + "\t");
+                    index++;
+                }
             }
+            System.out.println(); //prints new line at the end of the heap
         }
-        System.out.println(); //prints new line at the end of the heap
+        else
+            System.out.println(YELLOW + "Empty heap." + RESET); //prints new line at the end of the heap
     }
 
     /**
@@ -260,9 +267,9 @@ public class DaryHeap {
         Scanner scan = new Scanner(System.in);
         System.out.println (BOLD + BLUE_DARK + "\nREAD BEFORE USING PROGRAM - FOR THE USER'S INFORMATION:\n" + RESET + 
          "This program " + UNDERLINE + "does not " + RESET + "check that the \"d\" entered is a valid number.\n" +
-         "This program " + UNDERLINE + "does not " + RESET + "check that the file PATH entered is correct and that the file residing there is not empty.\n" +
-         "Each number in the file should be on a different line than the one before it, with no other symbols or letters.\n" + 
-          BLUE_LIGHT + "If the file given is built differently then specified then the program will glitch." + RESET + BOLD +
+         "This program " + UNDERLINE + "does not " + RESET + "check that the file PATH entered is correct and that the file residing there is not empty.\nThe file should end in '.txt'.\n" +
+         "Each number in the file should be on a different line than the one before it. \nBut, if there is a space or a character that is not a number on the line, then the program will substitute a zero insead.\n" + 
+          BLUE_LIGHT + "If the file given is built differently then specified then the program might not work as wanted." + RESET + BOLD +
          "\n\nIf these instructions are not clear or acceptable to you, please - \n" + PURPLE + "DO NOT use the program for it is not meant for such as you!\n" + RESET +
           GREEN + "\nIf you would like to continue, please type 1 and then enter." + RESET);
         
@@ -282,7 +289,8 @@ public class DaryHeap {
         dHeap.buildHeap();
 
         //displays message for better readability
-        System.out.println(BOLD + "Heap built: " + RESET);
+        if (heapEndPointer > 0)
+            System.out.println(BOLD + "Heap built: " + RESET);
         dHeap.print();
         
         System.out.println("Would you like to do a few actions with the heap above that you built?\n" +
