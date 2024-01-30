@@ -77,41 +77,32 @@ public class DaryHeap {
      * @param len The length of the heap.
      * @param index The index from which to start sorting.
      */
-    private void maxHeap (int len, int index) {
-
-        //initializes an array with maximum amount of leaves per one parent
-        int[] children = new int[d + 1];
-
-        //sorts the heap
-        while (true) {
-
-            //places into children array the children values - the last child will get the value of PLACEHOLDER_NUM
-            for (int i = 1; i <= d; i++) 
-                children[i] = (d * index + i) < len ? (d * index + i) : PLACEHOLDER_NUM;
- 
-            //sortes the children's array
-            int maxChild = PLACEHOLDER_NUM, maxChildIndex = 0;
-            for (int i = 1; i <= d; i++) { 
-                //if the children values aren't finished, and the value of the current child is larger than the current maximum value 
-                //then updates maximum value and index
-                if (children[i] != PLACEHOLDER_NUM && heap[children[i]] > maxChild) {
-                    maxChildIndex = children[i];
-                    maxChild = heap[children[i]];
-                }
-            }
-            
-            //stopping condition
-            if (maxChild == PLACEHOLDER_NUM)
-                break;
- 
-                //swaps values when needed
-                if (heap[index] < heap[maxChildIndex])
-                swap(index, maxChildIndex);
-                
-                index = maxChildIndex;
-            }
+    private void maxHeap(int len, int index) {
+        int child = getMaxChild(index, len);
+    
+        while (child != PLACEHOLDER_NUM && heap[child] > heap[index]) {
+            swap(index, child);
+            index = child;
+            child = getMaxChild(index, len);
+        }
     }
-        
+    
+    private int getMaxChild(int index, int len) {
+        int maxChildIndex = PLACEHOLDER_NUM;
+        int maxChildValue = PLACEHOLDER_NUM;
+    
+        for (int i = 1; i <= d; i++) {
+            int childIndex = d * index + i;
+    
+            if (childIndex < len && heap[childIndex] > maxChildValue) {
+                maxChildIndex = childIndex;
+                maxChildValue = heap[childIndex];
+            }
+        }
+    
+        return maxChildIndex;
+    }
+    
     /**
      * This method swaps two numbers in the heap.
      * Time complexity is O(1).
