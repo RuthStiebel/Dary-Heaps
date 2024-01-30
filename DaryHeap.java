@@ -80,15 +80,22 @@ public class DaryHeap {
     private void maxHeap(int len, int index) {
         int child = getMaxChild(index, len);
     
-        while (child != PLACEHOLDER_NUM && heap[child] > heap[index]) {
+        while (child != -1 && heap[child] > heap[index]) {
             swap(index, child);
             index = child;
             child = getMaxChild(index, len);
         }
     }
     
+    /**
+     * This method turns a regular heap into a maximum heap.
+     * Time complexity is O(logdn).
+     * @param len The length of the heap.
+     * @param index The index from which to start checking children nodes.
+     * @return The index of the maximum child of a specific parent
+     */
     private int getMaxChild(int index, int len) {
-        int maxChildIndex = PLACEHOLDER_NUM;
+        int maxChildIndex = -1;
         int maxChildValue = PLACEHOLDER_NUM;
     
         for (int i = 1; i <= d; i++) {
@@ -99,7 +106,6 @@ public class DaryHeap {
                 maxChildValue = heap[childIndex];
             }
         }
-    
         return maxChildIndex;
     }
     
