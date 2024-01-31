@@ -40,14 +40,15 @@ public class DaryHeap {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
             String line;
+            int lineNumber = 1;
             while ((line = br.readLine()) != null && heapEndPointer < MAX_SIZE) {
                     
                 try { //if there is more than just a number in each line then will return an error
                     heap[heapEndPointer] = Integer.parseInt(line);
                 } catch (NumberFormatException e) {
-                    System.out.println(YELLOW + "Invalid integer input in line: " + BLACK + line + RESET);
+                    System.out.println(YELLOW + "Invalid integer input in line: " + RESET + lineNumber + YELLOW + "\nReplaced it with '0'." + RESET);
                 }
-                
+                lineNumber ++;
                 heapEndPointer ++;
             }
 
@@ -58,8 +59,8 @@ public class DaryHeap {
         }
 
         if (heapEndPointer == MAX_SIZE)
-            System.out.println(YELLOW + "Numbers in file exceeded maximum size allowed (" + BLACK + MAX_SIZE + YELLOW + "). \nCopied only the first "
-            + BLACK + MAX_SIZE + YELLOW + " numbers in the file." + RESET);
+            System.out.println(YELLOW + "Numbers in file exceeded maximum size allowed (" + RESET + MAX_SIZE + YELLOW + "). \nCopied only the first "
+            + RESET + MAX_SIZE + YELLOW + " numbers in the file." + RESET);
     }
 
     /**
@@ -69,6 +70,25 @@ public class DaryHeap {
     private void buildHeap () {
         for (int i = (heapEndPointer - 1) / d; i >= 0; i--)
             maxHeapify(heapEndPointer, i);
+    }
+
+    private static DaryHeap newHeap ()
+    {
+        Scanner scan = new Scanner (System.in);
+        System.out.println ("Please enter a number that is the 'd' wanted and then press enter: ");
+        int d = scan.nextInt();
+    
+        System.out.println("Please enter the file PATH and then press enter:" + RESET);
+        String str = scan.next();
+
+        //initialises heap
+        DaryHeap dHeap = new DaryHeap (str, d);
+        dHeap.buildHeap();
+    
+        //closes scanner
+        scan.close();
+
+        return dHeap;
     }
 
     /**
@@ -250,7 +270,6 @@ public class DaryHeap {
             
             //prints the leftover leaves
             if (index < heapEndPointer) {
-                System.out.println(BOLD + UNDERLINE + level + ": " + heapEndPointer/d + RESET); 
                 System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ": " + RESET); 
                 while (index < heapEndPointer) {
                     System.out.print(heap[index] + "\t");
@@ -269,6 +288,8 @@ public class DaryHeap {
     public static void main (String[] args) {
 
         Scanner scan = new Scanner(System.in);
+        int flag = 1;
+
         System.out.println (BOLD + BLUE_DARK + "\nREAD BEFORE USING PROGRAM - FOR THE USER'S INFORMATION:\n" + RESET + 
          "This program " + UNDERLINE + "does not " + RESET + "check that the \"d\" entered is a valid number.\n" +
          "This program " + UNDERLINE + "does not " + RESET + "check that the file PATH entered is correct and that the file residing there is not empty.\nThe file should end in '.txt'.\n" +
@@ -277,20 +298,13 @@ public class DaryHeap {
          "\n\nIf these instructions are not clear or acceptable to you, please - \n" + PURPLE + "DO NOT use the program for it is not meant for such as you!\n" + RESET +
           GREEN + "\nIf you would like to continue, please type 1 and then enter." + RESET);
         
-         if (scan.nextInt() != 1) {
+         if (scan.nextInt() != flag) {
             System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
             System.exit (0);
         }
 
-        System.out.println ("Please enter a number that is the 'd' wanted and then press enter: ");
-        int d = scan.nextInt();
-    
-        System.out.println("Please enter the file PATH and then press enter:" + RESET);
-        String str = scan.next();
-
         //initialises heap
-        DaryHeap dHeap = new DaryHeap (str, d);
-        dHeap.buildHeap();
+        DaryHeap dHeap = newHeap(); 
 
         //displays message for better readability
         if (heapEndPointer > 0)
@@ -300,13 +314,12 @@ public class DaryHeap {
         System.out.println("Would you like to do a few actions with the heap above that you built?\n" +
         "If yes, type 1 and then enter.");
 
-        if (scan.nextInt() != 1) {
+        if (scan.nextInt() != flag) {
             System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
             System.exit (0);
         }
 
         //processes actions on the heap
-        int flag = 1;
         System.out.println("It has been understood that you wish to input commands." + 
         "\nThe program will continue to prompt you for new commands until you type \"exit\" or an illegal command.");
         while (flag == 1) {
@@ -328,10 +341,15 @@ public class DaryHeap {
                     dHeap.increaseKey(scan.nextInt(), scan.nextInt());   
                     break;
                 case "extractmax":
-                    dHeap.extractMax();  
+                    int max = dHeap.extractMax();  
+                    System.out.println ("THe maximum number is " + max + ".");
                     break;
                 case "print":
                     dHeap.print();
+                    break;
+                case "newheap":
+                    System.out.println (RED + "Old heap will be deleted and all its contents will be lost."+ RESET);
+                    dHeap = newHeap(); 
                     break;
                 case "exit":
                     System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
@@ -343,7 +361,6 @@ public class DaryHeap {
                     break;
             }
         }
-
         //closes scanner
         scan.close();
 
