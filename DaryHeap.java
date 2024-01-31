@@ -68,7 +68,7 @@ public class DaryHeap {
      */
     private void buildHeap () {
         for (int i = (heapEndPointer - 1) / d; i >= 0; i--)
-            maxHeap(heapEndPointer, i);
+            maxHeapify(heapEndPointer, i);
     }
 
     /**
@@ -77,11 +77,12 @@ public class DaryHeap {
      * @param len The length of the heap.
      * @param index The index from which to start sorting.
      */
-    private void maxHeap(int len, int index) {
+    private void maxHeapify(int len, int index) {
         int child = getMaxChild(index, len); //O(d)
     
-        while (child != -1 && heap[child] > heap[index]) { //logdn jumps
-            swap(index, child);
+        while (child != -1) { //logdn jumps
+            if (heap[child] > heap[index])
+                swap(index, child);
             index = child;
             child = getMaxChild(index, len); //O(d)
         }
@@ -171,7 +172,7 @@ public class DaryHeap {
         else {
             heap[index] =  heap[heapEndPointer - 1];
             heapEndPointer --;
-            maxHeap(heapEndPointer, 0);
+            maxHeapify(heapEndPointer, 0);
             System.out.println(GREEN + "The number at the index entered was successfully removed from heap!" + RESET);
         }
     }
@@ -214,7 +215,7 @@ public class DaryHeap {
         heapEndPointer --;
         
         //fixes heap
-        maxHeap(heapEndPointer, 0);
+        maxHeapify(heapEndPointer, 0);
         System.out.println(GREEN + "The maximum number was extracted successfully!" + RESET);            
         return max;
     }
