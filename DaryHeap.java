@@ -189,12 +189,15 @@ public class DaryHeap {
         if (heap[index] < k) {
             heap[index] =  k;
             //fixes heap
-            int i = 0;
-            while (heap[index] > heap[index-i]) {
-                swap(index, index-i);
-                i++;
-                System.out.println(GREEN + "The number at the index entered was successfully changed to number given!" + RESET);            
+            while (index >= d && heap[index] > heap[parent(index)]) {
+                swap(index, parent(index));
+                index = parent(index);
             }
+            //checking if node is larger that the first node
+            if (heap[index] > heap[0]) {
+                swap(index, 0);
+            }
+            System.out.println(GREEN + "The number at the index entered was successfully changed to number given!" + RESET);            
         }
         else
             System.out.println(GREEN + "The number at the index entered was larger than number given - therefore it was not changed!" + RESET);            
