@@ -72,9 +72,8 @@ public class DaryHeap {
             maxHeapify(heapEndPointer, i);
     }
 
-    private static DaryHeap newHeap ()
+    private static DaryHeap newHeap (Scanner scan)
     {
-        Scanner scan = new Scanner (System.in);
         System.out.println ("Please enter a number that is the 'd' wanted and then press enter: ");
         int d = scan.nextInt();
     
@@ -85,9 +84,6 @@ public class DaryHeap {
         DaryHeap dHeap = new DaryHeap (str, d);
         dHeap.buildHeap();
     
-        //closes scanner
-        scan.close();
-
         return dHeap;
     }
 
@@ -304,7 +300,7 @@ public class DaryHeap {
         }
 
         //initialises heap
-        DaryHeap dHeap = newHeap(); 
+        DaryHeap dHeap = newHeap(scan); 
 
         //displays message for better readability
         if (heapEndPointer > 0)
@@ -312,7 +308,7 @@ public class DaryHeap {
         dHeap.print();
         
         System.out.println("Would you like to do a few actions with the heap above that you built?\n" +
-        "If yes, type 1 and then enter.");
+        "If yes, type 1 and then enter. If not, type 0.");
 
         if (scan.nextInt() != flag) {
             System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
@@ -322,6 +318,7 @@ public class DaryHeap {
         //processes actions on the heap
         System.out.println("It has been understood that you wish to input commands." + 
         "\nThe program will continue to prompt you for new commands until you type \"exit\" or an illegal command.");
+
         while (flag == 1) {
             System.out.println ("Please enter command while making sure that it is spelt correctly and then press enter.");
             String word = scan.next();
@@ -348,8 +345,9 @@ public class DaryHeap {
                     dHeap.print();
                     break;
                 case "newheap":
-                    System.out.println (RED + "Old heap will be deleted and all its contents will be lost."+ RESET);
-                    dHeap = newHeap(); 
+                    System.out.println (RED + "The old heap will be deleted and all its contents will be lost." + RESET + "\nAre you sure you wish to continue? Type 1 if yes and 0 if not.");
+                    if (scan.nextInt() == flag)
+                        dHeap = newHeap(scan); 
                     break;
                 case "exit":
                     System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
