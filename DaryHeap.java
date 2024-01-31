@@ -7,8 +7,8 @@ public class DaryHeap {
     //class variables
     private static int[] heap;
     private static int heapEndPointer;
-    private static final int MAX_SIZE = 500;
-    private static final int PLACEHOLDER_NUM = -500000;
+    private static final int MAX_SIZE = 5000;
+    private static final int PLACEHOLDER_NUM = Integer.MIN_VALUE;
     private static int d;
 
     //formatting
@@ -61,28 +61,39 @@ public class DaryHeap {
         if (heapEndPointer == MAX_SIZE)
             System.out.println(YELLOW + "Numbers in file exceeded maximum size allowed (" + RESET + MAX_SIZE + YELLOW + "). \nCopied only the first "
             + RESET + MAX_SIZE + YELLOW + " numbers in the file." + RESET);
-    }
-
+        }
+        
     /**
      * This method turns an unsorted array into a d-ary heap.
-     * Time complexity is O(n).
+     * Time complexity is O(nlogdn).
      */
     private void buildHeap () {
         for (int i = (heapEndPointer - 1) / d; i >= 0; i--)
             maxHeapify(heapEndPointer, i);
     }
 
+    
+    /**
+     * This method turns an creates a d-ary heap..
+     * Time complexity is O(nlogdn).
+     * @param scan The scanner which scans the user's input.
+     */
     private static DaryHeap newHeap (Scanner scan)
     {
         System.out.println ("Please enter a number that is the 'd' wanted and then press enter: ");
         int d = scan.nextInt();
+        
+        if (d <= 0) {
+            System.out.println(YELLOW + "'d' entered must be larger than zero. Since the 'd' inputted was " + d + " which is not larger than zero then it was changed to one." + RESET);
+            d = 1;
+        }
     
         System.out.println("Please enter the file PATH and then press enter:" + RESET);
         String str = scan.next();
 
         //initialises heap
-        DaryHeap dHeap = new DaryHeap (str, d);
-        dHeap.buildHeap();
+        DaryHeap dHeap = new DaryHeap (str, d); //O(n)
+        dHeap.buildHeap(); //O(nlogdn)
     
         return dHeap;
     }
@@ -188,7 +199,7 @@ public class DaryHeap {
         else {
             heap[index] =  heap[heapEndPointer - 1];
             heapEndPointer --;
-            maxHeapify(heapEndPointer, 0);
+            maxHeapify(heapEndPointer, index);
             System.out.println(GREEN + "The number at the index entered was successfully removed from heap!" + RESET);
         }
     }
@@ -252,7 +263,7 @@ public class DaryHeap {
             System.out.println(BOLD + UNDERLINE + "Level 0:\n" + RESET + heap[0]); 
     
             //prints heap in levels according to 'd'
-            while (level < heapEndPointer/d && index < heapEndPointer) {
+            while (level <= heapEndPointer/d && index < heapEndPointer) {
                 System.out.println(BOLD + UNDERLINE + "\nLevel " + level + ":" + RESET); 
                 while (counter < d*dCounter && index < heapEndPointer) {
                     System.out.print(heap[index] + "\t");
@@ -292,7 +303,7 @@ public class DaryHeap {
          "Each number in the file should be on a different line than the one before it. \nBut, if there is a space or a character that is not a number on the line, then the program will substitute a zero insead.\n" + 
           BLUE_LIGHT + "If the file given is built differently then specified then the program might not work as wanted." + RESET + BOLD +
          "\n\nIf these instructions are not clear or acceptable to you, please - \n" + PURPLE + "DO NOT use the program for it is not meant for such as you!\n" + RESET +
-          GREEN + "\nIf you would like to continue, please type 1 and then enter." + RESET);
+          GREEN + "\nIf you would like to continue, please type 1 and then enter. Else, type 0 and then enter." + RESET);
         
          if (scan.nextInt() != flag) {
             System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
@@ -308,7 +319,7 @@ public class DaryHeap {
         dHeap.print();
         
         System.out.println("Would you like to do a few actions with the heap above that you built?\n" +
-        "If yes, type 1 and then enter. If not, type 0.");
+        "If yes, type 1 and then enter. If not, type 0 and then enter.");
 
         if (scan.nextInt() != flag) {
             System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
@@ -330,7 +341,7 @@ public class DaryHeap {
                     dHeap.insert(scan.nextInt());
                     break;
                 case "remove":
-                    System.out.println ("Please enter the index of the number to remove:");
+                    System.out.println ("Please enter the index of the number to remove: (index numbers start at 0)");
                     dHeap.remove(scan.nextInt());
                     break;
                 case "increasekey":
@@ -339,15 +350,23 @@ public class DaryHeap {
                     break;
                 case "extractmax":
                     int max = dHeap.extractMax();  
-                    System.out.println ("THe maximum number is " + max + ".");
+                    System.out.println ("The maximum number is " + max + ".");
                     break;
-                case "print":
+                    case "print":
                     dHeap.print();
                     break;
                 case "newheap":
                     System.out.println (RED + "The old heap will be deleted and all its contents will be lost." + RESET + "\nAre you sure you wish to continue? Type 1 if yes and 0 if not.");
                     if (scan.nextInt() == flag)
+                    {
                         dHeap = newHeap(scan); 
+                        System.out.println ("New heap created. \nWould you like to do a few actions with the heap above that you built?\n"
+                        + "If yes, type 1 and then enter. If not, type 0 and then enter.");
+                        if (scan.nextInt() != flag) {
+                            System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
+                            flag = 0;
+                        }
+                    } 
                     break;
                 case "exit":
                     System.out.println (UNDERLINE + RED + "Exiting program now."  + RESET);
